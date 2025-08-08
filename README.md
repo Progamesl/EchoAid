@@ -1,13 +1,11 @@
-# 🏆 EchoAid - AI-Powered Mental Health Wellness Platform
+# 🏆 EchoAid - Mental Health Wellness Platform
 
-## 🚀 **WINNING HACKATHON PROJECT**
+## 🚀 **THE PROJECT**
 
 EchoAid is a comprehensive AI-powered mental health platform that provides real-time crisis intervention, therapeutic support, and community building. Built with cutting-edge technology and evidence-based mental health practices.
 
 ## ✨ **Key Features**
 
-### 🤖 **Real AI Integration**
-- **GPT-4 powered responses** with therapeutic techniques
 - **Real-time crisis detection** with immediate intervention
 - **Evidence-based therapeutic approaches** (CBT, DBT, ACT, Mindfulness)
 - **Multi-language support** (12 languages)
@@ -154,7 +152,6 @@ EcoAid/
 - Community support groups
 - Resource sharing platforms
 
-## 🏆 **Why This Wins Hackathons**
 
 ### **✅ Technical Excellence**
 - **Full-stack application** with real backend
@@ -232,41 +229,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Crisis intervention experts for protocols
 - Open source community for tools and libraries
 
----
 
-## 🏆 **HACKATHON WINNING FEATURES**
-
-### **Real AI Integration**
-- ✅ GPT-4 powered responses
-- ✅ Evidence-based therapeutic techniques
-- ✅ Real-time crisis detection
-- ✅ Multi-language support
-
-### **Professional Backend**
-- ✅ Express.js server with security
-- ✅ JWT authentication
-- ✅ Rate limiting and protection
-- ✅ Real-time data processing
-
-### **Crisis Intervention**
-- ✅ Advanced detection algorithms
-- ✅ Immediate emergency response
-- ✅ Professional resource integration
-- ✅ Safety monitoring protocols
-
-### **Analytics Dashboard**
-- ✅ Real-time user metrics
-- ✅ Geographic impact tracking
-- ✅ Crisis intervention statistics
-- ✅ Community impact measurements
-
-### **Modern UI/UX**
-- ✅ Beautiful animations with Framer Motion
-- ✅ Responsive design with Tailwind CSS
-- ✅ Professional color schemes
-- ✅ Intuitive user experience
-
-**This is a WINNING HACKATHON PROJECT!** 🚀✨ 
 
 ## Demo Data and Crisis API
 
@@ -286,22 +249,4 @@ Run unit tests:
 npm test -- --watchAll=false
 ```
 
-## 3-Min Demo Flow
 
-1) Home → switch language (EN/ES/FR) to prove i18n
-2) Coach → type: "I feel like I want to end it all" → crisis modal pops, show 988 buttons
-3) Crisis Detector → click Emergency Resources, dial 988 button
-4) Analytics → show seeded numbers after hitting demo seed
-5) Export → any session export
-
-## Demo Commands (copy/paste)
-```bash
-# Start app
-npm run dev
-
-# Seed demo data (once)
-curl -X POST http://localhost:5000/api/demo/seed -H "Content-Type: application/json" -d {}
-
-# Crisis check
-curl -X POST http://localhost:5000/api/crisis/detect -H "Content-Type: application/json" -d '{"message":"I want to end it all"}'
-``` 
