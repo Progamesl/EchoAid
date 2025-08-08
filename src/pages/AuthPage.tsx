@@ -20,7 +20,7 @@ export const AuthPage: React.FC = () => {
             </span>
           </div>
           <p className="text-gray-600 dark:text-gray-400">
-            AI-powered emotional wellness platform for teens and students
+            A personalized emotional wellness platform for teens and students
           </p>
         </div>
 
@@ -52,7 +52,7 @@ export const AuthPage: React.FC = () => {
               <Brain className="h-6 w-6 text-secondary-600" />
             </div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-              AI Analysis
+              Wellness Analysis
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Get emotional insights and personalized recommendations

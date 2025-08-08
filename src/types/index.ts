@@ -5,8 +5,8 @@ export interface User {
   photoURL: string | null;
   isGuest: boolean;
   createdAt: Date;
-  language: 'en' | 'es';
-  theme: 'light' | 'dark';
+  language: Language;
+  theme: Theme;
 }
 
 export interface JournalEntry {
@@ -42,21 +42,25 @@ export interface EmotionData {
 export interface MentalHealthResource {
   id: string;
   name: string;
-  type: 'counseling' | 'hotline' | 'support-group' | 'app';
+  type: 'crisis' | 'therapy' | 'app' | 'support-group' | 'education' | 'specialized' | 'self-help';
+  category: 'emergency' | 'professional' | 'wellness' | 'community' | 'information' | 'lgbtq' | 'veterans' | 'tools' | 'digital-support';
   description: string;
   phone?: string;
   website?: string;
   distance?: number;
   rating: number;
   tags: string[];
+  availability: '24/7' | 'Weekly' | 'Varies';
+  cost: string;
+  languages: string[];
 }
 
 export interface AppState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  language: 'en' | 'es';
-  theme: 'light' | 'dark';
+  language: Language;
+  theme: Theme;
   notifications: boolean;
 }
 
@@ -91,8 +95,8 @@ export interface AIAnalysis {
   keywords: string[];
 }
 
-export type Language = 'en' | 'es';
-export type Theme = 'light' | 'dark';
+export type Language = 'en' | 'es' | 'fr';
+export type Theme = 'dark' | 'auto';
 export type SentimentLabel = 'positive' | 'negative' | 'neutral';
 
 // Extend Window interface for Web Speech API

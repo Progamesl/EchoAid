@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local AI Test - EchoAid</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+        .crisis-result {
+            border-left-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+        .ai-response {
+            background: rgba(76, 175, 80, 0.1);
+            border-left-color: #4CAF50;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Local AI System Test</h1>
+        <p style="text-align: center; margin-bottom: 30px; font-size: 1.1em;">
+            Testing EchoAid's advanced local AI system - completely offline and free!
+        </p>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Offline</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$0</div>
+                <div class="stat-label">Cost</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">⚡</div>
+                <div class="stat-label">Instant</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">🔒</div>
+                <div class="stat-label">Private</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧠 AI Wellness Coach Test</h2>
+            <div class="input-group">
+                <label for="wellness-input">Try talking to the AI Coach:</label>
+                <input type="text" id="wellness-input" placeholder="e.g., I'm feeling really sad today..." />
+            </div>
+            <button onclick="testWellnessAI()">Send Message</button>
+            <div id="wellness-result" class="result ai-response" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🚨 Crisis Detection Test</h2>
+            <div class="input-group">
+                <label for="crisis-input">Test crisis detection:</label>
+                <input type="text" id="crisis-input" placeholder="e.g., I feel like jumping off a cliff..." />
+            </div>
+            <button onclick="testCrisisDetection()">Analyze Text</button>
+            <div id="crisis-result" class="result crisis-result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 Advanced Analysis</h2>
+            <div class="input-group">
+                <label for="advanced-input">Test advanced analysis:</label>
+                <textarea id="advanced-input" rows="4" placeholder="Enter longer text for comprehensive analysis..."></textarea>
+            </div>
+            <button onclick="testAdvancedAnalysis()">Analyze</button>
+            <div id="advanced-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Local AI System - Completely Offline!
+        
+        // Emotion patterns for context understanding
+        const emotionPatterns = {
+            sadness: [
+                /sad|depressed|down|blue|miserable|hopeless|worthless|empty|lonely|grief|loss|miss/gi,
+                /crying|tears|weep|sob|heartbroken|devastated|crushed|defeated/gi,
+                /don't want to|can't take it|tired of|sick of|fed up|give up/gi
+            ],
+            anxiety: [
+                /anxious|worried|nervous|scared|fear|panic|overwhelmed|stressed|tense/gi,
+                /can't breathe|heart racing|sweating|shaking|dizzy|nauseous/gi,
+                /what if|worst case|catastrophe|disaster|terrible things/gi
+            ],
+            anger: [
+                /angry|mad|furious|rage|hate|resent|bitter|frustrated|irritated/gi,
+                /pissed off|fed up|sick of|tired of|had enough|can't stand/gi,
+                /want to scream|want to break|want to hurt|want to destroy/gi
+            ],
+            happiness: [
+                /happy|joy|excited|thrilled|elated|ecstatic|overjoyed|delighted/gi,
+                /amazing|wonderful|fantastic|great|awesome|incredible|blessed/gi,
+                /love|adore|cherish|treasure|appreciate|grateful|thankful/gi
+            ],
+            crisis: [
+                /kill myself|end it all|want to die|no reason to live|better off dead/gi,
+                /suicide|end my life|give up|no point|everyone would be better off/gi,
+                /cut myself|hurt myself|self harm|bleeding|scars|punish myself/gi,
+                /jump off|overdose|take pills|hang myself|shoot myself/gi
+            ]
+        };
+
+        // Response templates
+        const responseTemplates = {
+            crisis: {
+                immediate: [
+                    "🚨 I'm very concerned about what you're saying. Your life has value and you matter. Please call 988 immediately - they're available 24/7 and can help you right now. You don't have to go through this alone.",
+                    "🚨 I hear how much pain you're in, and I want you to know that you're not alone. Please call 988 right now - they have trained counselors who can help you through this crisis. Your life is precious.",
+                    "🚨 I'm taking this very seriously. Please call 988 immediately. They have people who care and can help you right now. You matter and your life has value."
+                ]
+            },
+            sadness: {
+                empathetic: [
+                    "I hear how much you're hurting, and I want you to know that your feelings are completely valid. It's okay to feel this way, and you don't have to go through it alone.",
+                    "That sounds really tough, and I can imagine how overwhelming it must feel. Your emotions matter, and it's okay to take time to process them.",
+                    "I'm so sorry you're going through this. Your pain is real, and you deserve support and understanding."
+                ]
+            },
+            anxiety: {
+                calming: [
+                    "I can hear how anxious you're feeling, and that's completely understandable. Let's take a moment to breathe together.",
+                    "Anxiety can feel so overwhelming, but you're not alone in this. What's one thing that might help you feel a bit calmer?",
+                    "It's okay to feel anxious - your body is trying to protect you. Let's work through this together."
+                ]
+            },
+            anger: {
+                validating: [
+                    "I can hear how angry you are, and that's completely understandable given what you're going through.",
+                    "Your anger is valid, and it's okay to feel this way. What's causing you to feel so frustrated?",
+                    "It sounds like you have every right to be upset. What would help you feel heard and understood?"
+                ]
+            },
+            happiness: {
+                celebratory: [
+                    "That's wonderful! I'm so happy to hear that you're feeling good. What's contributing to this positive feeling?",
+                    "It's great to hear you're in a good place! What's been going well for you lately?",
+                    "I love hearing about your happiness! What's making you feel so positive right now?"
+                ]
+            },
+            general: {
+                conversational: [
+                    "Tell me more about that. I want to understand better what you're going through.",
+                    "That's really interesting. How are you feeling about it?",
+                    "I appreciate you sharing that with me. What's on your mind about this?"
+                ]
+            }
+        };
+
+        // Crisis detection patterns
+        const crisisPatterns = {
+            suicidal: [
+                'want to die', 'no reason to live', 'better off dead', 'end it all',
+                'no point', 'everyone would be better off', 'give up', 'can\'t take it anymore'
+            ],
+            selfHarm: [
+                'cut myself', 'hurt myself', 'self harm', 'bleeding', 'scars',
+                'punish myself', 'deserve pain', 'physical pain', 'self injury'
+            ],
+            depression: [
+                'hopeless', 'worthless', 'empty', 'numb', 'tired all the time',
+                'can\'t sleep', 'no energy', 'don\'t care', 'sad all the time',
+                'life is meaningless', 'no future', 'no hope'
+            ],
+            anxiety: [
+                'panic', 'anxious', 'worried', 'scared', 'fear', 'overwhelmed',
+                'can\'t breathe', 'heart racing', 'constant worry', 'paralyzed with fear'
+            ],
+            bullying: [
+                'bullied', 'harassed', 'teased', 'picked on', 'excluded', 'made fun of',
+                'called names', 'threatened', 'intimidated', 'cyberbullying'
+            ],
+            violence: [
+                'want to hurt', 'want to fight', 'violent thoughts', 'anger issues',
+                'lose control', 'explode', 'rage', 'fury', 'revenge'
+            ]
+        };
+
+        // Critical phrases that require immediate intervention
+        const criticalPhrases = [
+            'kill myself', 'end it all', 'want to die', 'no reason to live', 'better off dead',
+            'suicide', 'end my life', 'give up', 'no point', 'everyone would be better off',
+            'cut myself', 'hurt myself', 'self harm', 'bleeding', 'scars', 'punish myself',
+            'jump off', 'overdose', 'take pills', 'hang myself', 'shoot myself'
+        ];
+
+        function analyzeEmotion(text) {
+            const lowerText = text.toLowerCase();
+            let maxScore = 0;
+            let primaryEmotion = 'neutral';
+            
+            for (const [emotion, patterns] of Object.entries(emotionPatterns)) {
+                let score = 0;
+                for (const pattern of patterns) {
+                    const matches = lowerText.match(pattern);
+                    if (matches) score += matches.length;
+                }
+                if (score > maxScore) {
+                    maxScore = score;
+                    primaryEmotion = emotion;
+                }
+            }
+            
+            return primaryEmotion;
+        }
+
+        function generateAIResponse(userMessage) {
+            const emotion = analyzeEmotion(userMessage);
+            const lowerMessage = userMessage.toLowerCase();
+            
+            // Crisis Detection - Immediate Response
+            if (emotion === 'crisis') {
+                const immediateResponse = responseTemplates.crisis.immediate[
+                    Math.floor(Math.random() * responseTemplates.crisis.immediate.length)
+                ];
+                return {
+                    text: immediateResponse,
+                    emotion: 'concerned',
+                    intensity: 90,
+                    type: 'crisis'
+                };
+            }
+            
+            // Emotion-Specific Responses
+            let responseText = '';
+            let responseEmotion = 'neutral';
+            let intensity = 30;
+            
+            switch (emotion) {
+                case 'sadness':
+                    responseText = responseTemplates.sadness.empathetic[
+                        Math.floor(Math.random() * responseTemplates.sadness.empathetic.length)
+                    ];
+                    responseEmotion = 'empathetic';
+                    intensity = 70;
+                    break;
+                case 'anxiety':
+                    responseText = responseTemplates.anxiety.calming[
+                        Math.floor(Math.random() * responseTemplates.anxiety.calming.length)
+                    ];
+                    responseEmotion = 'calming';
+                    intensity = 60;
+                    break;
+                case 'anger':
+                    responseText = responseTemplates.anger.validating[
+                        Math.floor(Math.random() * responseTemplates.anger.validating.length)
+                    ];
+                    responseEmotion = 'understanding';
+                    intensity = 65;
+                    break;
+                case 'happiness':
+                    responseText = responseTemplates.happiness.celebratory[
+                        Math.floor(Math.random() * responseTemplates.happiness.celebratory.length)
+                    ];
+                    responseEmotion = 'positive';
+                    intensity = 40;
+                    break;
+                default:
+                    responseText = responseTemplates.general.conversational[
+                        Math.floor(Math.random() * responseTemplates.general.conversational.length)
+                    ];
+                    responseEmotion = 'neutral';
+                    intensity = 30;
+            }
+            
+            // Add follow-up questions
+            const followUpQuestions = [
+                "What's one thing that might help you feel better right now?",
+                "How are you feeling about this situation?",
+                "What would be most helpful for you right now?",
+                "Can you tell me more about what's on your mind?",
+                "What's been the hardest part about this for you?"
+            ];
+            
+            if (emotion !== 'crisis' && Math.random() > 0.5) {
+                responseText += " " + followUpQuestions[Math.floor(Math.random() * followUpQuestions.length)];
+            }
+            
+            return {
+                text: responseText,
+                emotion: responseEmotion,
+                intensity: intensity,
+                type: emotion === 'crisis' ? 'crisis' : 'support'
+            };
+        }
+
+        function analyzeCrisis(text) {
+            const lowerText = text.toLowerCase();
+            
+            // Check for critical phrases first
+            for (const phrase of criticalPhrases) {
+                if (lowerText.includes(phrase)) {
+                    return {
+                        crisisDetected: true,
+                        crisisType: 'suicidal',
+                        confidence: 100,
+                        severity: 'critical',
+                        keywords: [phrase],
+                        interventionRequired: true,
+                        emergencyContacts: ['988', '911'],
+                        riskScore: 95,
+                        analysis: 'Critical suicidal ideation detected. Immediate intervention required.'
+                    };
+                }
+            }
+            
+            // Other crisis indicators
+            let maxConfidence = 0;
+            let detectedCrisis = '';
+            let detectedKeywords = [];
+            
+            for (const [crisisType, patterns] of Object.entries(crisisPatterns)) {
+                let confidence = 0;
+                const foundKeywords = [];
+                
+                for (const pattern of patterns) {
+                    if (lowerText.includes(pattern)) {
+                        confidence += 20;
+                        foundKeywords.push(pattern);
+                    }
+                }
+                
+                if (confidence > maxConfidence) {
+                    maxConfidence = confidence;
+                    detectedCrisis = crisisType;
+                    detectedKeywords = foundKeywords;
+                }
+            }
+            
+            if (maxConfidence >= 40) {
+                const severity = maxConfidence >= 80 ? 'high' : maxConfidence >= 60 ? 'medium' : 'low';
+                const interventionRequired = maxConfidence >= 60;
+                
+                return {
+                    crisisDetected: true,
+                    crisisType: detectedCrisis,
+                    confidence: Math.min(maxConfidence, 95),
+                    severity: severity,
+                    keywords: detectedKeywords,
+                    interventionRequired: interventionRequired,
+                    emergencyContacts: interventionRequired ? ['988'] : [],
+                    riskScore: maxConfidence,
+                    analysis: `${detectedCrisis} crisis detected with ${maxConfidence}% confidence.`
+                };
+            }
+            
+            return {
+                crisisDetected: false,
+                crisisType: 'none',
+                confidence: 0,
+                severity: 'low',
+                keywords: [],
+                interventionRequired: false,
+                emergencyContacts: [],
+                riskScore: 0,
+                analysis: 'No crisis detected in the text.'
+            };
+        }
+
+        function testWellnessAI() {
+            const input = document.getElementById('wellness-input').value;
+            if (!input.trim()) return;
+            
+            const result = generateAIResponse(input);
+            const resultDiv = document.getElementById('wellness-result');
+            
+            resultDiv.innerHTML = `
+                <h3>🤖 AI Response:</h3>
+                <p><strong>Message:</strong> ${result.text}</p>
+                <p><strong>Detected Emotion:</strong> ${result.emotion}</p>
+                <p><strong>Intensity:</strong> ${result.intensity}/100</p>
+                <p><strong>Response Type:</strong> ${result.type}</p>
+                <p><strong>Processing Time:</strong> < 1ms (Local AI)</p>
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        function testCrisisDetection() {
+            const input = document.getElementById('crisis-input').value;
+            if (!input.trim()) return;
+            
+            const result = analyzeCrisis(input);
+            const resultDiv = document.getElementById('crisis-result');
+            
+            resultDiv.innerHTML = `
+                <h3>🚨 Crisis Analysis:</h3>
+                <p><strong>Crisis Detected:</strong> ${result.crisisDetected ? 'YES' : 'NO'}</p>
+                <p><strong>Crisis Type:</strong> ${result.crisisType}</p>
+                <p><strong>Confidence:</strong> ${result.confidence}%</p>
+                <p><strong>Severity:</strong> ${result.severity}</p>
+                <p><strong>Keywords Found:</strong> ${result.keywords.join(', ') || 'None'}</p>
+                <p><strong>Intervention Required:</strong> ${result.interventionRequired ? 'YES' : 'NO'}</p>
+                <p><strong>Emergency Contacts:</strong> ${result.emergencyContacts.join(', ') || 'None'}</p>
+                <p><strong>Risk Score:</strong> ${result.riskScore}/100</p>
+                <p><strong>Analysis:</strong> ${result.analysis}</p>
+                <p><strong>Processing Time:</strong> < 1ms (Local AI)</p>
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        function testAdvancedAnalysis() {
+            const input = document.getElementById('advanced-input').value;
+            if (!input.trim()) return;
+            
+            const emotion = analyzeEmotion(input);
+            const crisis = analyzeCrisis(input);
+            const aiResponse = generateAIResponse(input);
+            
+            const resultDiv = document.getElementById('advanced-result');
+            
+            resultDiv.innerHTML = `
+                <h3>📊 Advanced Analysis Results:</h3>
+                
+                <h4>🎭 Emotion Analysis:</h4>
+                <p><strong>Primary Emotion:</strong> ${emotion}</p>
+                
+                <h4>🚨 Crisis Detection:</h4>
+                <p><strong>Detected:</strong> ${crisis.crisisDetected ? 'YES' : 'NO'}</p>
+                <p><strong>Type:</strong> ${crisis.crisisType}</p>
+                <p><strong>Confidence:</strong> ${crisis.confidence}%</p>
+                <p><strong>Severity:</strong> ${crisis.severity}</p>
+                
+                <h4>🤖 AI Response:</h4>
+                <p><strong>Response:</strong> ${aiResponse.text}</p>
+                <p><strong>Emotion:</strong> ${aiResponse.emotion}</p>
+                <p><strong>Intensity:</strong> ${aiResponse.intensity}/100</p>
+                
+                <h4>⚡ Performance:</h4>
+                <p><strong>Processing Time:</strong> < 1ms (Local AI)</p>
+                <p><strong>Cost:</strong> $0 (Completely Free)</p>
+                <p><strong>Privacy:</strong> 100% (No data sent to external servers)</p>
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        // Add enter key support
+        document.getElementById('wellness-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') testWellnessAI();
+        });
+        
+        document.getElementById('crisis-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') testCrisisDetection();
+        });
+        
+        document.getElementById('advanced-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') testAdvancedAnalysis();
+        });
+    </script>
+</body>
+</html> 

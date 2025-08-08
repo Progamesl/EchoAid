@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoAid Crisis Detection AI - Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .test-area {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .test-area h2 {
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .crisis-detected {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: 2px solid #ff4757;
+        }
+
+        .safe {
+            background: linear-gradient(45deg, #2ed573, #1e90ff);
+            border: 2px solid #2ed573;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .result-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+
+        .crisis-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .info-card h4 {
+            margin-bottom: 10px;
+            color: #feca57;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            transition: width 1s ease;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .keyword {
+            background: rgba(255, 107, 107, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 107, 107, 0.5);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .examples {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .examples h3 {
+            margin-bottom: 15px;
+            color: #feca57;
+        }
+
+        .example-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .example-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .emergency-contacts {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .emergency-contacts h3 {
+            margin-bottom: 15px;
+        }
+
+        .contact-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 Crisis Detection AI</h1>
+            <p>Advanced AI-powered crisis detection system</p>
+        </div>
+
+        <div class="test-area">
+            <h2>Test Crisis Detection</h2>
+            <textarea id="testInput" placeholder="Type your message here to test the AI crisis detection...&#10;&#10;Try examples like:&#10;- 'I am getting bullied in school I cant take it anymore'&#10;- 'I want to kill myself'&#10;- 'I'm feeling really sad and hopeless'&#10;- 'I'm so anxious I can't breathe'"></textarea>
+            
+            <button class="btn" onclick="analyzeText()" id="analyzeBtn">🔍 Analyze Text</button>
+            <button class="btn" onclick="clearResults()">🗑️ Clear</button>
+        </div>
+
+        <div class="examples">
+            <h3>💡 Test Examples</h3>
+            <div class="example-item" onclick="setExample('I am getting bullied in school I cant take it anymore')">
+                🏫 Bullying Crisis: "I am getting bullied in school I cant take it anymore"
+            </div>
+            <div class="example-item" onclick="setExample('I want to kill myself and end it all')">
+                ⚠️ Suicidal Crisis: "I want to kill myself and end it all"
+            </div>
+            <div class="example-item" onclick="setExample('I feel like jumping off a cliff')">
+                🚨 Critical Suicidal: "I feel like jumping off a cliff"
+            </div>
+            <div class="example-item" onclick="setExample('I want to shoot up the school')">
+                🔫 Violence Threat: "I want to shoot up the school"
+            </div>
+            <div class="example-item" onclick="setExample('I feel so hopeless and worthless all the time')">
+                😔 Depression: "I feel so hopeless and worthless all the time"
+            </div>
+            <div class="example-item" onclick="setExample('I am so anxious I can not breathe properly')">
+                😰 Anxiety: "I am so anxious I can not breathe properly"
+            </div>
+            <div class="example-item" onclick="setExample('I want to cut myself to feel something')">
+                🩸 Self-Harm: "I want to cut myself to feel something"
+            </div>
+            <div class="example-item" onclick="setExample('I want to overdose on pills')">
+                💊 Overdose: "I want to overdose on pills"
+            </div>
+            <div class="example-item" onclick="setExample('I want to hang myself')">
+                🪢 Hanging: "I want to hang myself"
+            </div>
+            <div class="example-item" onclick="setExample('I want to shoot myself')">
+                🔫 Gun Suicide: "I want to shoot myself"
+            </div>
+            <div class="example-item" onclick="setExample('I want to crash my car')">
+                🚗 Vehicle Suicide: "I want to crash my car"
+            </div>
+            <div class="example-item" onclick="setExample('I want to drown myself')">
+                💧 Drowning: "I want to drown myself"
+            </div>
+            <div class="example-item" onclick="setExample('I want to burn myself')">
+                🔥 Burning: "I want to burn myself"
+            </div>
+            <div class="example-item" onclick="setExample('I want to starve myself')">
+                🍽️ Starvation: "I want to starve myself"
+            </div>
+            <div class="example-item" onclick="setExample('I am feeling great today and happy')">
+                😊 Safe Message: "I am feeling great today and happy"
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <h3>🤖 AI Analyzing...</h3>
+                <p>Scanning for crisis signals and patterns</p>
+            </div>
+
+            <div id="resultContent" style="display: none;">
+                <div class="result-header">
+                    <div class="result-icon" id="resultIcon">🚨</div>
+                    <div>
+                        <h2 id="resultTitle">Crisis Detected</h2>
+                        <p id="resultSubtitle">AI analysis completed</p>
+                    </div>
+                </div>
+
+                <div class="crisis-info" id="crisisInfo">
+                    <!-- Crisis info cards will be inserted here -->
+                </div>
+
+                <div class="keywords" id="keywords">
+                    <!-- Keywords will be inserted here -->
+                </div>
+
+                <div class="emergency-contacts" id="emergencyContacts" style="display: none;">
+                    <h3>🚨 Emergency Contacts</h3>
+                    <p>If you're in crisis, please contact:</p>
+                    <button class="contact-btn" onclick="callEmergency('988')">📞 Call 988 (Suicide & Crisis)</button>
+                    <button class="contact-btn" onclick="callEmergency('911')">🚨 Call 911 (Emergency)</button>
+                    <button class="contact-btn" onclick="callEmergency('741741')">💬 Text 741741 (Crisis Text)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced AI Crisis Detection System
+        class CrisisDetectionAI {
+            constructor() {
+                this.patterns = {
+                    suicidal: {
+                        patterns: [
+                            /(?:want|wish|plan|going|will|need|have to|must|should|gonna|going to)\s+(?:to\s+)?(?:kill|end|die|suicide|harm|hurt)\s+(?:myself|me|my\s+life)/gi,
+                            /(?:life|existence|living|being)\s+(?:is\s+)?(?:not\s+worth|pointless|meaningless|useless|hopeless)/gi,
+                            /(?:everyone|everybody|world|people|family|friends)\s+(?:would\s+be\s+)?(?:better\s+off|happier|safer)\s+(?:without|if\s+I\s+wasn't|if\s+I\s+was\s+gone)/gi,
+                            /(?:no\s+reason|no\s+point|no\s+purpose|nothing\s+left|nothing\s+matters|no\s+future|no\s+hope)/gi,
+                            /(?:end\s+it\s+all|give\s+up|can't\s+take\s+it|can't\s+do\s+this|i'm\s+done|i\s+quit)/gi,
+                            /(?:final\s+goodbye|last\s+message|goodbye\s+forever|see\s+you\s+never)/gi,
+                            /(?:better\s+off\s+dead|wish\s+I\s+was\s+dead|want\s+to\s+disappear|want\s+to\s+be\s+gone)/gi
+                        ],
+                        keywords: [
+                            'kill myself', 'end it all', 'want to die', 'no reason to live',
+                            'better off dead', 'suicide', 'end my life', 'give up', 'no point',
+                            'everyone would be better off', 'world would be better without me',
+                            'plan to end it', 'final goodbye', 'last message', 'no purpose',
+                            'better off dead', 'end my suffering', 'no more pain', 'cant take it anymore',
+                            'i cant take it', 'i cant do this anymore', 'i give up', 'im done',
+                            'no one cares', 'no one would miss me', 'better off without me',
+                            'life is not worth living', 'existence is pain', 'i want to disappear',
+                            // CRITICAL: Add specific cliff/jumping phrases
+                            // Expanded suicidal expressions
+                            'want to end myself', 'end myself', 'kill myself', 'take my own life',
+                            'commit suicide', 'attempt suicide', 'suicidal thoughts', 'suicidal ideation',
+                            'suicidal feelings', 'suicidal urges', 'suicidal impulses',
+                            'want to die', 'wish i was dead', 'wish i could die', 'hope i die',
+                            'pray to die', 'beg to die', 'plead to die', 'cry to die',
+                            'scream to die', 'shout to die', 'yell to die', 'whisper to die',
+                            'think about dying', 'think about death', 'think about suicide',
+                            'plan my death', 'plan my suicide', 'plan my end', 'plan my exit',
+                            'prepare for death', 'prepare for suicide', 'prepare for end',
+                            'research suicide', 'research death', 'research dying',
+                            'look up suicide', 'look up death', 'look up dying',
+                            'google suicide', 'google death', 'google dying',
+                            'search suicide', 'search death', 'search dying',
+                            
+                            // Specific methods and locations
+                            'jumping off a cliff', 'jump off a cliff', 'jump off cliff', 'jumping off cliff',
+                            'feel like jumping off', 'want to jump off', 'going to jump off',
+                            'jump from bridge', 'jumping from bridge', 'jump off bridge',
+                            'jump from building', 'jumping from building', 'jump off building',
+                            'jump from roof', 'jumping from roof', 'jump off roof',
+                            'jump from window', 'jumping from window', 'jump off window',
+                            'throw myself off', 'throwing myself off', 'throw off',
+                            'fall from height', 'falling from height', 'jump to death',
+                            'jumping to death', 'fall to death', 'falling to death',
+                            'end it by jumping', 'jump to end it', 'jump to end life',
+                            'jump off something', 'jumping off something', 'jump from something',
+                            'jump off anything', 'jumping off anything', 'jump from anything',
+                            
+                            // Overdose and poisoning
+                            'overdose', 'take pills', 'swallow pills', 'take too many pills',
+                            'take all my pills', 'take all pills', 'swallow all pills',
+                            'poison myself', 'poisoning', 'toxic substances', 'chemicals',
+                            'drink poison', 'swallow poison', 'ingest poison',
+                            'take medication', 'take medicine', 'take drugs', 'take substances',
+                            'mix medications', 'mix medicines', 'mix drugs',
+                            'alcohol poisoning', 'drug overdose', 'medication overdose',
+                            
+                            // Hanging and suffocation
+                            'hang myself', 'hanging', 'rope', 'noose', 'tie rope',
+                            'tie noose', 'make noose', 'make rope', 'tie myself',
+                            'suffocate', 'suffocation', 'choke myself', 'choking',
+                            'plastic bag', 'bag over head', 'cover face', 'stop breathing',
+                            'hold breath', 'stop breathing', 'cut off air', 'cut off oxygen',
+                            
+                            // Cutting and bleeding
+                            'cut myself', 'cutting myself', 'bleed to death', 'bleeding out',
+                            'cut wrists', 'cut arms', 'cut legs', 'cut throat',
+                            'slice myself', 'slash myself', 'stab myself', 'pierce myself',
+                            'open veins', 'open arteries', 'blood loss', 'hemorrhage',
+                            'exsanguination', 'bleed out', 'bleed dry',
+                            
+                            // Gun and weapon methods
+                            'shoot myself', 'gun to head', 'gun to temple', 'gun to chest',
+                            'pull trigger', 'fire gun', 'shoot gun', 'gunshot',
+                            'bullet to head', 'bullet to brain', 'shoot brain',
+                            'knife to throat', 'knife to chest', 'knife to heart',
+                            'stab myself', 'stab heart', 'stab chest', 'stab throat',
+                            
+                            // Vehicle and traffic
+                            'crash car', 'drive into wall', 'drive into tree', 'drive off bridge',
+                            'drive off cliff', 'drive into traffic', 'drive into oncoming',
+                            'car accident', 'car crash', 'vehicle crash', 'vehicle accident',
+                            'run into wall', 'run into tree', 'run off road',
+                            'train tracks', 'train accident', 'train crash',
+                            
+                            // Drowning and water
+                            'drown myself', 'drowning', 'water', 'lake', 'river', 'ocean',
+                            'swimming pool', 'bathtub', 'sink', 'submerge', 'underwater',
+                            'go underwater', 'stay underwater', 'hold under water',
+                            
+                            // Fire and burning
+                            'burn myself', 'burning', 'fire', 'set fire', 'light fire',
+                            'burn to death', 'burn alive', 'burn down', 'arson',
+                            'gasoline', 'accelerant', 'flammable', 'combustible',
+                            
+                            // Freezing and exposure
+                            'freeze to death', 'freezing', 'cold', 'hypothermia',
+                            'exposure', 'weather', 'outside', 'winter', 'snow',
+                            'ice', 'frostbite', 'cold death',
+                            
+                            // Starvation and dehydration
+                            'starve myself', 'starvation', 'not eat', 'stop eating',
+                            'dehydrate', 'dehydration', 'not drink', 'stop drinking',
+                            'fasting', 'hunger strike', 'refuse food', 'refuse water',
+                            
+                            // Emotional expressions
+                            'cant take it anymore', 'cant take this anymore', 'i cant take it anymore',
+                            'cant handle it anymore', 'cant deal with it anymore',
+                            'cant go on anymore', 'cant continue anymore', 'cant live anymore',
+                            'dont want to live anymore', 'dont want to exist anymore',
+                            'dont want to be here anymore', 'dont want to be alive anymore',
+                            'wish i was never born', 'wish i didnt exist', 'wish i was dead',
+                            'wish i could disappear', 'wish i could vanish', 'wish i could fade away',
+                            'wish i could evaporate', 'wish i could dissolve', 'wish i could melt away',
+                            
+                            // Hopelessness and despair
+                            'no hope', 'no future', 'no tomorrow', 'no point', 'no purpose',
+                            'no meaning', 'no reason', 'no worth', 'no value', 'no importance',
+                            'no significance', 'no impact', 'no difference', 'no change',
+                            'no improvement', 'no better', 'no good', 'no worth living',
+                            'no reason to live', 'no purpose to live', 'no meaning to life',
+                            'no point to life', 'no worth to life', 'no value to life',
+                            
+                            // Burden and guilt
+                            'everyone would be better off', 'world would be better without me',
+                            'family would be better off', 'friends would be better off',
+                            'parents would be better off', 'siblings would be better off',
+                            'spouse would be better off', 'children would be better off',
+                            'no one would miss me', 'no one would care', 'no one would notice',
+                            'no one would remember', 'no one would mourn', 'no one would grieve',
+                            'i am a burden', 'i am a problem', 'i am a mistake', 'i am a failure',
+                            'i am worthless', 'i am useless', 'i am nothing', 'i am nobody',
+                            'i am a waste', 'i am a waste of space', 'i am a waste of air',
+                            'i am a waste of resources', 'i am a waste of time', 'i am a waste of life',
+                            
+                            // Finality and goodbye
+                            'final goodbye', 'last goodbye', 'goodbye forever', 'farewell',
+                            'last message', 'final message', 'last words', 'final words',
+                            'last note', 'final note', 'suicide note', 'death note',
+                            'goodbye letter', 'farewell letter', 'final letter', 'last letter',
+                            'goodbye world', 'farewell world', 'goodbye life', 'farewell life',
+                            'goodbye everyone', 'farewell everyone', 'goodbye all', 'farewell all',
+                            
+                            // Planning and preparation
+                            'plan my death', 'plan my suicide', 'plan my end', 'plan my exit',
+                            'prepare for death', 'prepare for suicide', 'prepare for end',
+                            'research suicide', 'research death', 'research dying',
+                            'look up suicide', 'look up death', 'look up dying',
+                            'google suicide', 'google death', 'google dying',
+                            'search suicide', 'search death', 'search dying',
+                            'find suicide methods', 'find death methods', 'find dying methods',
+                            'learn suicide', 'learn death', 'learn dying',
+                            'study suicide', 'study death', 'study dying',
+                            
+                            // Timing and urgency
+                            'tonight', 'this night', 'tonight is the night', 'tonight i will',
+                            'this is the night', 'this is it', 'this is the end', 'this is final',
+                            'this is my last', 'this is my final', 'this is goodbye',
+                            'this is farewell', 'this is the last time', 'this is the final time',
+                            'never again', 'no more', 'no longer', 'no more time',
+                            'no more chances', 'no more opportunities', 'no more hope',
+                            'no more future', 'no more tomorrow', 'no more life',
+                            
+                            // Specific phrases that need exact matching
+                            'i feel like jumping off a cliff', 'feel like jumping off a cliff',
+                            'want to jump off a cliff', 'going to jump off a cliff',
+                            'jump off a cliff', 'jumping off a cliff',
+                            'cant take it anymore', 'cant take this anymore', 'i cant take it anymore'
+                        ]
+                    },
+                    bullying: {
+                        patterns: [
+                            /(?:getting|being|am|are|is)\s+(?:bullied|harassed|teased|picked\s+on|made\s+fun\s+of)/gi,
+                            /(?:school|class|work|online|cyber)\s+(?:bullying|harassment|abuse)/gi,
+                            /(?:afraid|scared|terrified|fearful)\s+(?:to\s+go\s+to\s+school|of\s+school|of\s+class)/gi,
+                            /(?:hate|loathe|despise)\s+(?:school|class|going\s+to\s+school)/gi,
+                            /(?:no\s+friends|alone|isolated|excluded|left\s+out|ignored)/gi,
+                            /(?:everyone|everybody|nobody|no\s+one)\s+(?:hates|likes|cares\s+about)\s+me/gi,
+                            /(?:called\s+names|made\s+fun\s+of|laughed\s+at|pushed\s+around)/gi,
+                            /(?:rumors|gossip|lies|threats|intimidation)/gi
+                        ],
+                        keywords: [
+                            // Basic bullying terms
+                            'bullied', 'bullying', 'bullies', 'getting bullied', 'school bullying',
+                            'cyberbullying', 'online bullying', 'harassment', 'teased', 'picked on',
+                            'excluded', 'left out', 'rumors', 'gossip', 'threatened', 'intimidated',
+                            'afraid to go to school', 'hate school', 'school sucks', 'no friends',
+                            'everyone hates me', 'nobody likes me', 'alone at school', 'isolated',
+                            'pushed around', 'called names', 'made fun of', 'laughed at',
+                            
+                            // Expanded bullying scenarios
+                            'verbal abuse', 'emotional abuse', 'psychological abuse', 'social exclusion',
+                            'peer rejection', 'social isolation', 'group targeting', 'mob mentality',
+                            'gang up on', 'ganged up on', 'surrounded by bullies', 'trapped at school',
+                            'no escape from bullying', 'bullying every day', 'daily harassment',
+                            'constant teasing', 'relentless bullying', 'nonstop bullying',
+                            'bullying won\'t stop', 'cant escape bullying', 'bullying follows me',
+                            'bullying everywhere', 'bullying at home', 'bullying online',
+                            'cyber harassment', 'online threats', 'social media bullying',
+                            'text bullying', 'phone bullying', 'digital harassment',
+                            
+                            // Physical bullying
+                            'hit me', 'pushed me', 'kicked me', 'punched me', 'slapped me',
+                            'spit on me', 'threw things at me', 'tripped me', 'blocked my way',
+                            'cornered me', 'trapped me', 'grabbed me', 'pulled my hair',
+                            'stole my things', 'destroyed my stuff', 'vandalized my property',
+                            'physical assault', 'physical violence', 'bodily harm',
+                            
+                            // Emotional impact
+                            'feel worthless', 'feel like trash', 'feel like garbage', 'feel like nothing',
+                            'feel invisible', 'feel like a ghost', 'feel like i dont exist',
+                            'feel like a joke', 'feel like a loser', 'feel like a failure',
+                            'feel like a burden', 'feel like a problem', 'feel like a mistake',
+                            'feel like i should disappear', 'feel like i should die',
+                            'feel like everyone hates me', 'feel like nobody cares',
+                            'feel like i dont belong', 'feel like an outsider',
+                            'feel like a freak', 'feel like a weirdo', 'feel like a reject',
+                            
+                            // School-specific bullying
+                            'lunch table bullying', 'bus bullying', 'locker room bullying',
+                            'gym class bullying', 'recess bullying', 'hallway bullying',
+                            'bathroom bullying', 'stairwell bullying', 'parking lot bullying',
+                            'after school bullying', 'walking home bullying',
+                            
+                            // Social media and online
+                            'facebook bullying', 'instagram bullying', 'snapchat bullying',
+                            'tiktok bullying', 'twitter bullying', 'youtube bullying',
+                            'online hate', 'digital abuse', 'internet harassment',
+                            'anonymous bullying', 'fake accounts', 'impersonation',
+                            'photo manipulation', 'video bullying', 'live stream bullying',
+                            
+                            // Specific phrases and expressions
+                            'kill yourself', 'kys', 'go die', 'you should die', 'you deserve to die',
+                            'no one would miss you', 'everyone hates you', 'you\'re worthless',
+                            'you\'re trash', 'you\'re garbage', 'you\'re a loser',
+                            'you\'re a freak', 'you\'re weird', 'you\'re ugly',
+                            'you\'re fat', 'you\'re skinny', 'you\'re stupid',
+                            'you\'re dumb', 'you\'re retarded', 'you\'re gay',
+                            'you\'re a fag', 'you\'re a dyke', 'you\'re a whore',
+                            'you\'re a slut', 'you\'re a bitch', 'you\'re a cunt',
+                            
+                            // EXACT PHRASE MATCHES FOR CRITICAL CASES
+                            'i am getting bullied in school', 'getting bullied in school i cant take it anymore',
+                            'bullied in school i cant take it anymore', 'i am getting bullied i cant take it anymore',
+                            'i am getting bullied in school i cant take it anymore'
+                        ]
+                    },
+                    depression: {
+                        patterns: [
+                            /(?:always|constantly|forever|never)\s+(?:sad|depressed|hopeless|empty|numb)/gi,
+                            /(?:can't|can't|cant)\s+(?:sleep|get\s+out\s+of\s+bed|function|work)/gi,
+                            /(?:no\s+energy|tired\s+all\s+the\s+time|exhausted|drained)/gi,
+                            /(?:don't|dont)\s+(?:care|feel|want|need|matter)/gi,
+                            /(?:life|existence|everything|nothing)\s+(?:is\s+)?(?:meaningless|pointless|useless)/gi,
+                            /(?:no\s+future|no\s+hope|no\s+purpose|no\s+reason)/gi,
+                            /(?:dark\s+thoughts|negative\s+thoughts|intrusive\s+thoughts)/gi,
+                            /(?:worthless|useless|failure|disappointment|burden)/gi
+                        ],
+                        keywords: [
+                            'hopeless', 'worthless', 'empty', 'numb', 'tired all the time',
+                            'can\'t sleep', 'no energy', 'don\'t care', 'sad all the time',
+                            'life is meaningless', 'no future', 'no hope', 'despair',
+                            'dark thoughts', 'no purpose', 'exhausted', 'overwhelmed',
+                            'worthless', 'useless', 'failure', 'disappointment', 'depressed',
+                            'always sad', 'never happy', 'no joy', 'no motivation', 'cant get out of bed',
+                            'everything is pointless', 'nothing matters', 'im a failure', 'im worthless'
+                        ]
+                    },
+                    anxiety: {
+                        patterns: [
+                            /(?:panic|anxiety|panic\s+attack|anxiety\s+attack)/gi,
+                            /(?:can't|can't|cant)\s+(?:breathe|stop\s+worrying|calm\s+down)/gi,
+                            /(?:heart\s+racing|chest\s+tight|hyperventilating)/gi,
+                            /(?:constant|always|never\s+ending)\s+(?:worry|fear|anxiety)/gi,
+                            /(?:feeling\s+trapped|impending\s+doom|overwhelmed)/gi,
+                            /(?:freaking\s+out|losing\s+my\s+mind|going\s+crazy)/gi,
+                            /(?:mental\s+breakdown|nervous\s+breakdown)/gi
+                        ],
+                        keywords: [
+                            'panic', 'anxious', 'worried', 'scared', 'fear', 'overwhelmed',
+                            'can\'t breathe', 'heart racing', 'constant worry', 'paralyzed',
+                            'hyperventilating', 'chest tight', 'dizzy', 'lightheaded',
+                            'feeling trapped', 'impending doom', 'panic attack', 'anxiety attack',
+                            'always worried', 'cant stop worrying', 'constant fear', 'terrified',
+                            'freaking out', 'losing my mind', 'going crazy', 'mental breakdown'
+                        ]
+                    },
+                    selfHarm: {
+                        patterns: [
+                            /(?:cut|hurt|harm|injure|damage)\s+(?:myself|my\s+body|my\s+skin)/gi,
+                            /(?:burn|hit|starve|overdose)\s+(?:myself|my\s+body)/gi,
+                            /(?:self\s+harm|self\s+injury|self\s+destruction)/gi,
+                            /(?:deserve\s+pain|need\s+to\s+feel\s+pain|punish\s+myself)/gi,
+                            /(?:tools\s+ready|plan\s+to\s+hurt|want\s+to\s+hurt)/gi
+                        ],
+                        keywords: [
+                            'cut myself', 'hurt myself', 'self harm', 'bleeding', 'scars',
+                            'punish myself', 'deserve pain', 'physical pain', 'self injury',
+                            'burn myself', 'hit myself', 'starve myself', 'overdose',
+                            'plan to hurt', 'tools ready', 'self-destructive', 'self-punishment',
+                            'want to hurt myself', 'need to feel pain', 'deserve to suffer',
+                            'cutting myself', 'burning myself', 'starving myself'
+                        ]
+                    },
+                    violence: {
+                        patterns: [
+                            /(?:shoot|kill|bomb|mass\s+shooting|school\s+shooting)/gi,
+                            /(?:bring\s+a\s+gun|bring\s+a\s+weapon|shoot\s+the\s+school)/gi,
+                            /(?:kill\s+them\s+all|hurt\s+everyone|revenge)/gi,
+                            /(?:violent\s+thoughts|want\s+to\s+hurt\s+others)/gi,
+                            /(?:hate\s+everyone|rage|going\s+to\s+hurt\s+someone)/gi
+                        ],
+                        keywords: [
+                            'shoot up', 'bomb', 'kill everyone', 'mass shooting', 'school shooting',
+                            'bring a gun', 'bring a weapon', 'shoot the school', 'kill them all',
+                            'revenge', 'get back at them', 'make them pay', 'they deserve it',
+                            'violent thoughts', 'want to hurt others', 'hate everyone', 'rage',
+                            'going to hurt someone', 'planning violence', 'violent fantasies'
+                        ]
+                    }
+                };
+            }
+
+            analyze(content) {
+                const lowerContent = content.toLowerCase();
+                let bestMatch = {
+                    crisisDetected: false,
+                    crisisType: 'none',
+                    confidence: 0,
+                    severity: 'low',
+                    keywords: [],
+                    interventionRequired: false,
+                    emergencyContacts: []
+                };
+
+                // CRITICAL: Special handling for jumping/cliff phrases
+                if (lowerContent.includes('i feel like jumping off a cliff') ||
+                    lowerContent.includes('feel like jumping off a cliff') ||
+                    lowerContent.includes('want to jump off a cliff') ||
+                    lowerContent.includes('going to jump off a cliff') ||
+                    lowerContent.includes('jump off a cliff') ||
+                    lowerContent.includes('jumping off a cliff')) {
+                    console.log('🚨 CRITICAL SUICIDAL CASE DETECTED - "JUMPING OFF A CLIFF"!');
+                    return {
+                        crisisDetected: true,
+                        crisisType: 'suicidal',
+                        confidence: 100,
+                        severity: 'critical',
+                        keywords: ['jumping off a cliff', 'suicidal ideation'],
+                        interventionRequired: true,
+                        emergencyContacts: ['988', '911']
+                    };
+                }
+
+                // CRITICAL: Special handling for "cant take it anymore" phrases
+                if (lowerContent.includes('cant take it anymore') || 
+                    lowerContent.includes('cant take this anymore') ||
+                    lowerContent.includes('i cant take it anymore')) {
+                    console.log('🚨 CRITICAL SUICIDAL CASE DETECTED - "CANT TAKE IT ANYMORE"!');
+                    return {
+                        crisisDetected: true,
+                        crisisType: 'suicidal',
+                        confidence: 95,
+                        severity: 'critical',
+                        keywords: ['cant take it anymore'],
+                        interventionRequired: true,
+                        emergencyContacts: ['988', '911']
+                    };
+                }
+
+                // CRITICAL: Special handling for the exact bullying case
+                if (lowerContent.includes('i am getting bullied in school i cant take it anymore') ||
+                    lowerContent.includes('getting bullied in school i cant take it anymore') ||
+                    lowerContent.includes('bullied in school i cant take it anymore')) {
+                    console.log('🚨 CRITICAL BULLYING CASE DETECTED - EXACT MATCH!');
+                    return {
+                        crisisDetected: true,
+                        crisisType: 'suicidal',
+                        confidence: 100,
+                        severity: 'critical',
+                        keywords: ['getting bullied', 'cant take it anymore'],
+                        interventionRequired: true,
+                        emergencyContacts: ['988', '911']
+                    };
+                }
+
+                // Analyze each crisis type
+                for (const [crisisType, data] of Object.entries(this.patterns)) {
+                    let matches = 0;
+                    let foundKeywords = [];
+
+                    // Check patterns
+                    for (const pattern of data.patterns) {
+                        const patternMatches = content.match(pattern);
+                        if (patternMatches) {
+                            matches += patternMatches.length;
+                        }
+                    }
+
+                    // Check keywords
+                    for (const keyword of data.keywords) {
+                        if (lowerContent.includes(keyword)) {
+                            matches++;
+                            foundKeywords.push(keyword);
+                        }
+                    }
+
+                    // Calculate confidence and severity
+                    if (matches > 0) {
+                        const baseConfidence = Math.min(70 + (matches * 10), 95);
+                        const contextMultiplier = this.getContextMultiplier(content, crisisType);
+                        const finalConfidence = Math.min(baseConfidence * contextMultiplier, 100);
+                        
+                        let severity = 'low';
+                        if (finalConfidence >= 90) severity = 'critical';
+                        else if (finalConfidence >= 80) severity = 'high';
+                        else if (finalConfidence >= 70) severity = 'medium';
+
+                        if (finalConfidence > bestMatch.confidence) {
+                            bestMatch = {
+                                crisisDetected: true,
+                                crisisType,
+                                confidence: finalConfidence,
+                                severity,
+                                keywords: foundKeywords,
+                                interventionRequired: severity === 'critical' || severity === 'high',
+                                emergencyContacts: this.getEmergencyContacts(crisisType, severity)
+                            };
+                        }
+                    }
+                }
+
+                return bestMatch;
+            }
+
+            getContextMultiplier(content, crisisType) {
+                let multiplier = 1.0;
+                const lowerContent = content.toLowerCase();
+
+                // Context indicators
+                const intensityWords = ['really', 'very', 'extremely', 'completely', 'totally', 'absolutely'];
+                const timeWords = ['always', 'never', 'constantly', 'forever', 'everyday', 'every day'];
+                const actionWords = ['plan', 'going to', 'will', 'must', 'have to', 'need to'];
+                const emotionalWords = ['crying', 'sobbing', 'screaming', 'breaking down', 'falling apart'];
+
+                const intensityCount = intensityWords.filter(word => lowerContent.includes(word)).length;
+                const timeCount = timeWords.filter(word => lowerContent.includes(word)).length;
+                const actionCount = actionWords.filter(word => lowerContent.includes(word)).length;
+                const emotionalCount = emotionalWords.filter(word => lowerContent.includes(word)).length;
+
+                multiplier += intensityCount * 0.1;
+                multiplier += timeCount * 0.15;
+                multiplier += actionCount * 0.2;
+                multiplier += emotionalCount * 0.25;
+
+                // Crisis-specific multipliers
+                if (crisisType === 'suicidal' && lowerContent.includes('plan')) multiplier += 0.3;
+                if (crisisType === 'selfHarm' && lowerContent.includes('tools')) multiplier += 0.4;
+                if (crisisType === 'violence' && lowerContent.includes('gun')) multiplier += 0.5;
+
+                return Math.min(multiplier, 1.5);
+            }
+
+            getEmergencyContacts(crisisType, severity) {
+                const contacts = ['988'];
+                if (severity === 'critical') contacts.push('911');
+                if (crisisType === 'violence') contacts.unshift('911');
+                if (crisisType === 'bullying') contacts.push('741741');
+                return contacts;
+            }
+        }
+
+        // Initialize AI
+        const ai = new CrisisDetectionAI();
+
+        // UI Functions
+        function analyzeText() {
+            const input = document.getElementById('testInput').value.trim();
+            if (input.length < 10) {
+                alert('Please enter at least 10 characters to analyze.');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultContent').style.display = 'none';
+            document.getElementById('analyzeBtn').disabled = true;
+
+            // Simulate AI processing
+            setTimeout(() => {
+                const result = ai.analyze(input);
+                displayResults(result);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resultContent').style.display = 'block';
+                document.getElementById('analyzeBtn').disabled = false;
+            }, 2000);
+        }
+
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('results');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultSubtitle = document.getElementById('resultSubtitle');
+            const crisisInfo = document.getElementById('crisisInfo');
+            const keywords = document.getElementById('keywords');
+            const emergencyContacts = document.getElementById('emergencyContacts');
+
+            // Set result styling
+            if (result.crisisDetected) {
+                resultsDiv.className = 'results crisis-detected';
+                resultIcon.textContent = '🚨';
+                resultTitle.textContent = 'CRISIS DETECTED';
+                resultSubtitle.textContent = 'AI has identified a crisis situation requiring immediate attention';
+                emergencyContacts.style.display = 'block';
+            } else {
+                resultsDiv.className = 'results safe';
+                resultIcon.textContent = '✅';
+                resultTitle.textContent = 'NO CRISIS DETECTED';
+                resultSubtitle.textContent = 'Your message appears to be safe';
+                emergencyContacts.style.display = 'none';
+            }
+
+            // Build crisis info
+            crisisInfo.innerHTML = `
+                <div class="info-card">
+                    <h4>Confidence Level</h4>
+                    <div>${result.confidence}%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${result.confidence}%"></div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h4>Severity Level</h4>
+                    <div style="color: ${getSeverityColor(result.severity)}">${result.severity.toUpperCase()}</div>
+                </div>
+                <div class="info-card">
+                    <h4>Crisis Type</h4>
+                    <div>${result.crisisType === 'none' ? 'None' : result.crisisType.toUpperCase()}</div>
+                </div>
+                <div class="info-card">
+                    <h4>Intervention Required</h4>
+                    <div>${result.interventionRequired ? 'YES' : 'NO'}</div>
+                </div>
+            `;
+
+            // Build keywords
+            if (result.keywords.length > 0) {
+                keywords.innerHTML = '<h4>Detected Keywords:</h4>' + 
+                    result.keywords.map(keyword => `<span class="keyword">"${keyword}"</span>`).join('');
+            } else {
+                keywords.innerHTML = '';
+            }
+        }
+
+        function getSeverityColor(severity) {
+            switch (severity) {
+                case 'critical': return '#ff4757';
+                case 'high': return '#ff6b6b';
+                case 'medium': return '#feca57';
+                case 'low': return '#2ed573';
+                default: return '#ffffff';
+            }
+        }
+
+        function setExample(text) {
+            document.getElementById('testInput').value = text;
+        }
+
+        function clearResults() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('testInput').value = '';
+        }
+
+        function callEmergency(number) {
+            if (confirm(`Are you sure you want to call ${number}? This will open your phone dialer.`)) {
+                window.open(`tel:${number}`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html> 

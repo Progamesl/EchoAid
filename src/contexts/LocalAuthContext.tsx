@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '../types';
+import { User, Language } from '../types';
 
 interface LocalAuthContextType {
   user: User | null;
@@ -60,7 +60,7 @@ export const LocalAuthProvider: React.FC<LocalAuthProviderProps> = ({ children }
           isGuest: false,
           createdAt: new Date(foundUser.createdAt),
           language: foundUser.language || 'en',
-          theme: foundUser.theme || 'light',
+          theme: foundUser.theme || 'dark',
         };
         
         setUser(userData);
@@ -93,7 +93,7 @@ export const LocalAuthProvider: React.FC<LocalAuthProviderProps> = ({ children }
         isGuest: false,
         createdAt: new Date(),
         language: 'en',
-        theme: 'light',
+        theme: 'dark',
       };
 
       // Save to localStorage
@@ -133,7 +133,7 @@ export const LocalAuthProvider: React.FC<LocalAuthProviderProps> = ({ children }
         isGuest: true,
         createdAt: new Date(),
         language: 'en',
-        theme: 'light',
+        theme: 'dark',
       };
       
       setUser(guestUser);
@@ -148,9 +148,11 @@ export const LocalAuthProvider: React.FC<LocalAuthProviderProps> = ({ children }
     if (!user) return;
     
     try {
+      console.log('LocalAuthContext: Updating user settings:', settings);
       const updatedUser = { ...user, ...settings };
       setUser(updatedUser);
       localStorage.setItem('echoaid_user', JSON.stringify(updatedUser));
+      console.log('LocalAuthContext: User settings updated successfully');
     } catch (error) {
       console.error('Update user settings error:', error);
       throw error;

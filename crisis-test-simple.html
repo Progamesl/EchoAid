@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crisis Detection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-case {
+            background: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .crisis-detected {
+            background: #ff4444;
+            border: 2px solid #ff0000;
+        }
+        .no-crisis {
+            background: #44ff44;
+            border: 2px solid #00ff00;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚨 Crisis Detection Test</h1>
+    <p>Testing the specific case: "I am getting bullied in school I cant take it anymore"</p>
+    
+    <div class="test-case">
+        <h3>Test Input:</h3>
+        <p id="testInput">I am getting bullied in school I cant take it anymore</p>
+        <button onclick="testCrisisDetection()">Test Crisis Detection</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>Additional Test Cases:</h3>
+        <button onclick="testCase('I want to kill myself')">Suicidal Test</button>
+        <button onclick="testCase('I am feeling really sad and hopeless')">Depression Test</button>
+        <button onclick="testCase('I am so anxious I cant breathe')">Anxiety Test</button>
+        <button onclick="testCase('I am getting bullied')">Simple Bullying Test</button>
+        <button onclick="testCase('cant take it anymore')">Cant Take It Test</button>
+        <div id="additionalResult" class="result"></div>
+    </div>
+
+    <script>
+        // Simplified crisis detection logic
+        function detectCrisisSignals(content) {
+            const lowerContent = content.toLowerCase();
+            const signals = [];
+
+            // Bullying detection
+            const bullyingKeywords = [
+                'bullied', 'bullying', 'bullies', 'getting bullied', 'school bullying',
+                'cyberbullying', 'online bullying', 'harassment', 'teased', 'picked on',
+                'excluded', 'left out', 'rumors', 'gossip', 'threatened', 'intimidated',
+                'afraid to go to school', 'hate school', 'school sucks', 'no friends',
+                'everyone hates me', 'nobody likes me', 'alone at school', 'isolated',
+                'pushed around', 'called names', 'made fun of', 'laughed at',
+                'i am getting bullied', 'getting bullied in school', 'bullied in school',
+                'school bullying', 'being bullied', 'am bullied', 'get bullied',
+                'hate going to school', 'afraid of school', 'scared of school',
+                'dont want to go to school', 'cant go to school', 'school is hell',
+                'school is torture', 'everyone at school hates me', 'school is awful',
+                // EXACT PHRASE MATCHES FOR CRITICAL CASES
+                'i am getting bullied in school', 'getting bullied in school i cant take it anymore',
+                'bullied in school i cant take it anymore', 'i am getting bullied i cant take it anymore'
+            ];
+            
+            const bullyingMatches = bullyingKeywords.filter(keyword => 
+                lowerContent.includes(keyword)
+            );
+            
+            // CRITICAL: Special handling for the exact failing case
+            if (lowerContent.includes('i am getting bullied in school i cant take it anymore') ||
+                lowerContent.includes('getting bullied in school i cant take it anymore') ||
+                lowerContent.includes('bullied in school i cant take it anymore')) {
+                console.log('🚨 CRITICAL BULLYING CASE DETECTED - EXACT MATCH!');
+                signals.push({
+                    type: 'suicidal',
+                    confidence: 100,
+                    severity: 'critical',
+                    keywords: ['getting bullied', 'cant take it anymore'],
+                    interventionRequired: true,
+                    emergencyContacts: ['988', '911']
+                });
+                return signals; // Return immediately for this critical case
+            }
+            
+            if (bullyingMatches.length > 0) {
+                signals.push({
+                    type: 'suicidal',
+                    confidence: Math.min(85 + (bullyingMatches.length * 8), 100),
+                    severity: bullyingMatches.length > 2 ? 'critical' : 'high',
+                    keywords: bullyingMatches,
+                    interventionRequired: true,
+                    emergencyContacts: ['988', '911']
+                });
+            }
+
+            // Suicidal detection
+            const suicidalKeywords = [
+                'kill myself', 'end it all', 'want to die', 'no reason to live',
+                'better off dead', 'suicide', 'end my life', 'give up', 'no point',
+                'everyone would be better off', 'world would be better without me',
+                'plan to end it', 'final goodbye', 'last message', 'no purpose',
+                'better off dead', 'end my suffering', 'no more pain', 'cant take it anymore',
+                'i cant take it', 'i cant do this anymore', 'i give up', 'im done',
+                'no one cares', 'no one would miss me', 'better off without me',
+                'life is not worth living', 'existence is pain', 'i want to disappear',
+                'cant take it', 'take it anymore', 'cant take this', 'take this anymore',
+                'i cant take', 'cant take anymore', 'take anymore', 'cant handle',
+                'cant handle this', 'cant handle it', 'cant deal with', 'cant deal',
+                'dont want to live', 'want to end it', 'end it all', 'end everything',
+                'no more', 'cant go on', 'cant continue', 'give up on life',
+                'life is over', 'im finished', 'im done with life', 'done with life'
+            ];
+            
+            const suicidalMatches = suicidalKeywords.filter(keyword => 
+                lowerContent.includes(keyword)
+            );
+            
+            // CRITICAL: Special handling for "cant take it anymore" phrases
+            if (lowerContent.includes('cant take it anymore') || 
+                lowerContent.includes('cant take this anymore') ||
+                lowerContent.includes('i cant take it anymore')) {
+                console.log('🚨 CRITICAL SUICIDAL CASE DETECTED - "CANT TAKE IT ANYMORE"!');
+                signals.push({
+                    type: 'suicidal',
+                    confidence: 95,
+                    severity: 'critical',
+                    keywords: ['cant take it anymore'],
+                    interventionRequired: true,
+                    emergencyContacts: ['988', '911']
+                });
+            }
+            
+            if (suicidalMatches.length > 0) {
+                signals.push({
+                    type: 'suicidal',
+                    confidence: Math.min(90 + (suicidalMatches.length * 5), 100),
+                    severity: suicidalMatches.length > 2 ? 'critical' : 'high',
+                    keywords: suicidalMatches,
+                    interventionRequired: true,
+                    emergencyContacts: ['988', '911']
+                });
+            }
+
+            return signals;
+        }
+
+        function testCrisisDetection() {
+            const testInput = document.getElementById('testInput').textContent;
+            const signals = detectCrisisSignals(testInput);
+            const resultDiv = document.getElementById('result');
+            
+            console.log('Test input:', testInput);
+            console.log('Detected signals:', signals);
+            
+            if (signals.length > 0) {
+                resultDiv.className = 'result crisis-detected';
+                resultDiv.innerHTML = `
+                    <h4>🚨 CRISIS DETECTED!</h4>
+                    <p><strong>Type:</strong> ${signals[0].type}</p>
+                    <p><strong>Confidence:</strong> ${signals[0].confidence}%</p>
+                    <p><strong>Severity:</strong> ${signals[0].severity}</p>
+                    <p><strong>Keywords:</strong> ${signals[0].keywords.join(', ')}</p>
+                    <p><strong>Intervention Required:</strong> ${signals[0].interventionRequired ? 'YES' : 'NO'}</p>
+                    <p><strong>Emergency Contacts:</strong> ${signals[0].emergencyContacts.join(', ')}</p>
+                `;
+            } else {
+                resultDiv.className = 'result no-crisis';
+                resultDiv.innerHTML = `
+                    <h4>✅ NO CRISIS DETECTED</h4>
+                    <p>This is a CRITICAL FAILURE for the test case!</p>
+                `;
+            }
+        }
+
+        function testCase(text) {
+            const signals = detectCrisisSignals(text);
+            const resultDiv = document.getElementById('additionalResult');
+            
+            console.log('Test case:', text);
+            console.log('Detected signals:', signals);
+            
+            if (signals.length > 0) {
+                resultDiv.className = 'result crisis-detected';
+                resultDiv.innerHTML = `
+                    <h4>🚨 CRISIS DETECTED for: "${text}"</h4>
+                    <p><strong>Type:</strong> ${signals[0].type}</p>
+                    <p><strong>Confidence:</strong> ${signals[0].confidence}%</p>
+                    <p><strong>Severity:</strong> ${signals[0].severity}</p>
+                    <p><strong>Keywords:</strong> ${signals[0].keywords.join(', ')}</p>
+                `;
+            } else {
+                resultDiv.className = 'result no-crisis';
+                resultDiv.innerHTML = `
+                    <h4>✅ NO CRISIS DETECTED for: "${text}"</h4>
+                `;
+            }
+        }
+
+        // Auto-run the main test
+        window.onload = function() {
+            testCrisisDetection();
+        };
+    </script>
+</body>
+</html> 

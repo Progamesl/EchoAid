@@ -5,268 +5,614 @@ export const translations = {
     // Navigation
     home: 'Home',
     journal: 'Journal',
+    coach: 'Coach',
+    challenges: 'Challenges',
     history: 'History',
     resources: 'Resources',
     settings: 'Settings',
     
-    // Auth
-    login: 'Login',
-    signup: 'Sign Up',
-    guestMode: 'Continue as Guest',
-    email: 'Email',
-    password: 'Password',
-    confirmPassword: 'Confirm Password',
-    displayName: 'Display Name',
-    forgotPassword: 'Forgot Password?',
-    alreadyHaveAccount: 'Already have an account?',
-    dontHaveAccount: "Don't have an account?",
-    logout: 'Logout',
-    
-    // Journal
-    startRecording: 'Start Recording',
-    stopRecording: 'Stop Recording',
-    pauseRecording: 'Pause',
-    resumeRecording: 'Resume',
-    uploadAudio: 'Upload Audio',
-    saveEntry: 'Save Entry',
-    journalPlaceholder: 'How are you feeling today?',
-    recordingInProgress: 'Recording in progress...',
-    processingAudio: 'Processing audio...',
-    analyzingSentiment: 'Analyzing your emotions...',
-    
-    // AI Analysis
-    moodSummary: 'Mood Summary',
-    emotionalInsights: 'Emotional Insights',
-    suggestedActions: 'Suggested Actions',
-    quoteOfTheDay: 'Quote of the Day',
-    
-    // History
-    emotionHeatmap: 'Emotion Heatmap',
-    moodOverTime: 'Mood Over Time',
-    noEntries: 'No journal entries yet',
-    startJournaling: 'Start journaling to see your emotional journey',
-    
-    // Resources
-    mentalHealthResources: 'Mental Health Resources',
-    nearbyResources: 'Nearby Resources',
-    hotlines: 'Crisis Hotlines',
-    supportGroups: 'Support Groups',
-    apps: 'Wellness Apps',
-    
-    // Settings
-    darkMode: 'Dark Mode',
-    lightMode: 'Light Mode',
-    language: 'Language',
-    notifications: 'Notifications',
-    journalReminders: 'Journal Reminders',
-    wellnessTips: 'Wellness Tips',
-    moodCheckins: 'Mood Check-ins',
-    
     // Common
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    edit: 'Edit',
+    add: 'Add',
+    remove: 'Remove',
     loading: 'Loading...',
     error: 'Error',
     success: 'Success',
-    cancel: 'Cancel',
-    save: 'Save',
-    delete: 'Delete',
-    edit: 'Edit',
-    close: 'Close',
-    or: 'or',
-    viewAll: 'View All',
-    viewHistory: 'View History',
-    getSupport: 'Get Support',
-    totalEntries: 'Total Entries',
-    recentEntries: 'Recent Entries',
-    noEntriesYet: 'No entries yet',
-    wellnessTip: 'Wellness Tip',
-    transcription: 'Transcription',
-    transcriptionPlaceholder: 'Your transcribed text will appear here...',
-    pause: 'Pause',
-    play: 'Play',
-    sentiment: 'Sentiment',
-    confidence: 'Confidence',
-    mood: 'Mood',
-    aiAnalysis: 'AI Analysis',
-    detectedEmotions: 'Detected Emotions',
-    keyInsights: 'Key Insights',
-    voiceJournaling: 'Voice Journaling',
-    textContent: 'Text Content',
-    analyzeContent: 'Analyze Content',
-    emergencySupport: 'Emergency Support',
-    emergencyDescription: 'If you\'re in crisis or need immediate help, please contact emergency services.',
-    call911: 'Call 911',
-    suicidePrevention: 'Suicide Prevention',
-    call: 'Call',
-    visit: 'Visit',
-    positive: 'Positive',
-    neutral: 'Neutral',
-    negative: 'Negative',
-    noData: 'No Data',
-    accountSettings: 'Account Settings',
+    
+    // Settings
+    general: 'General',
     appearance: 'Appearance',
-    accountType: 'Account Type',
-    dataManagement: 'Data Management',
-    exportData: 'Export Data',
-    deleteAccount: 'Delete Account',
+    accessibility: 'Accessibility',
+    privacy: 'Privacy & Security',
+    notifications: 'Notifications',
+    data: 'Data & Backup',
+    support: 'Support',
+    donate: 'Support Us',
     
-    // Emotions
-    happy: 'Happy',
-    sad: 'Sad',
-    angry: 'Angry',
-    anxious: 'Anxious',
-    calm: 'Calm',
-    excited: 'Excited',
-    tired: 'Tired',
-    stressed: 'Stressed',
+    // Language names
+    language: 'Language',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
     
-    // Wellness Tips
-    tip1: 'Take deep breaths when feeling overwhelmed',
-    tip2: 'Practice gratitude by writing down 3 things you appreciate',
-    tip3: 'Connect with a friend or family member',
-    tip4: 'Go for a walk in nature',
-    tip5: 'Try a 5-minute meditation',
+    // Theme
+    theme: 'Theme',
+    dark: 'Dark',
+    auto: 'Auto',
+    recommended: 'Recommended',
     
-    // Quotes
-    quote1: 'Your feelings are valid, and it\'s okay to not be okay.',
-    quote2: 'Every day is a new beginning.',
-    quote3: 'You are stronger than you think.',
-    quote4: 'It\'s okay to ask for help.',
-    quote5: 'You are not alone in this journey.',
+    // Features
+    soundEffects: 'Sound Effects',
+    audioFeedback: 'Enable audio feedback',
+    
+    // Crisis Help
+    crisisHelp: 'Crisis Help',
+    emergencyContacts: 'Emergency Contacts',
+    call988: 'Call 988',
+    text988: 'Text 988',
+    call911: 'Call 911',
+    viewResources: 'View All Resources',
+    
+    // Wellness
+    wellness: 'Wellness',
+    mentalHealth: 'Mental Health',
+    selfCare: 'Self Care',
+    mindfulness: 'Mindfulness',
+    meditation: 'Meditation',
+    exercise: 'Exercise',
+    nutrition: 'Nutrition',
+    sleep: 'Sleep',
+    social: 'Social',
+    work: 'Work',
+    family: 'Family',
+    hobbies: 'Hobbies',
+    
+    // Progress
+    progress: 'Progress',
+    streak: 'Streak',
+    level: 'Level',
+    experience: 'Experience',
+    achievements: 'Achievements',
+    rewards: 'Rewards',
+    
+    // Messages
+    welcome: 'Welcome',
+    welcomeBack: 'Welcome Back',
+    thankYou: 'Thank You',
+    congratulations: 'Congratulations',
+    goodJob: 'Good Job',
+    keepGoing: 'Keep Going',
+    youCanDoIt: 'You Can Do It',
   },
+  
   es: {
     // Navigation
     home: 'Inicio',
     journal: 'Diario',
+    coach: 'Entrenador',
+    challenges: 'Desafíos',
     history: 'Historial',
     resources: 'Recursos',
     settings: 'Configuración',
     
-    // Auth
-    login: 'Iniciar Sesión',
-    signup: 'Registrarse',
-    guestMode: 'Continuar como Invitado',
-    email: 'Correo Electrónico',
-    password: 'Contraseña',
-    confirmPassword: 'Confirmar Contraseña',
-    displayName: 'Nombre de Usuario',
-    forgotPassword: '¿Olvidaste tu contraseña?',
-    alreadyHaveAccount: '¿Ya tienes una cuenta?',
-    dontHaveAccount: '¿No tienes una cuenta?',
-    logout: 'Cerrar Sesión',
-    
-    // Journal
-    startRecording: 'Comenzar Grabación',
-    stopRecording: 'Detener Grabación',
-    pauseRecording: 'Pausar',
-    resumeRecording: 'Reanudar',
-    uploadAudio: 'Subir Audio',
-    saveEntry: 'Guardar Entrada',
-    journalPlaceholder: '¿Cómo te sientes hoy?',
-    recordingInProgress: 'Grabación en progreso...',
-    processingAudio: 'Procesando audio...',
-    analyzingSentiment: 'Analizando tus emociones...',
-    
-    // AI Analysis
-    moodSummary: 'Resumen del Estado de Ánimo',
-    emotionalInsights: 'Perspectivas Emocionales',
-    suggestedActions: 'Acciones Sugeridas',
-    quoteOfTheDay: 'Cita del Día',
-    
-    // History
-    emotionHeatmap: 'Mapa de Calor Emocional',
-    moodOverTime: 'Estado de Ánimo a lo Largo del Tiempo',
-    noEntries: 'Aún no hay entradas en el diario',
-    startJournaling: 'Comienza a escribir en tu diario para ver tu viaje emocional',
-    
-    // Resources
-    mentalHealthResources: 'Recursos de Salud Mental',
-    nearbyResources: 'Recursos Cercanos',
-    hotlines: 'Líneas de Crisis',
-    supportGroups: 'Grupos de Apoyo',
-    apps: 'Aplicaciones de Bienestar',
-    
-    // Settings
-    darkMode: 'Modo Oscuro',
-    lightMode: 'Modo Claro',
-    language: 'Idioma',
-    notifications: 'Notificaciones',
-    journalReminders: 'Recordatorios del Diario',
-    wellnessTips: 'Consejos de Bienestar',
-    moodCheckins: 'Verificaciones de Estado de Ánimo',
-    
     // Common
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    delete: 'Eliminar',
+    edit: 'Editar',
+    add: 'Agregar',
+    remove: 'Quitar',
     loading: 'Cargando...',
     error: 'Error',
     success: 'Éxito',
-    cancel: 'Cancelar',
-    save: 'Guardar',
-    delete: 'Eliminar',
-    edit: 'Editar',
-    close: 'Cerrar',
-    or: 'o',
-    viewAll: 'Ver Todo',
-    viewHistory: 'Ver Historial',
-    getSupport: 'Obtener Apoyo',
-    totalEntries: 'Total de Entradas',
-    recentEntries: 'Entradas Recientes',
-    noEntriesYet: 'Aún no hay entradas',
-    wellnessTip: 'Consejo de Bienestar',
-    transcription: 'Transcripción',
-    transcriptionPlaceholder: 'Tu texto transcrito aparecerá aquí...',
-    pause: 'Pausar',
-    play: 'Reproducir',
-    sentiment: 'Sentimiento',
-    confidence: 'Confianza',
-    mood: 'Estado de Ánimo',
-    aiAnalysis: 'Análisis de IA',
-    detectedEmotions: 'Emociones Detectadas',
-    keyInsights: 'Perspectivas Clave',
-    voiceJournaling: 'Diario de Voz',
-    textContent: 'Contenido de Texto',
-    analyzeContent: 'Analizar Contenido',
-    emergencySupport: 'Apoyo de Emergencia',
-    emergencyDescription: 'Si estás en crisis o necesitas ayuda inmediata, contacta servicios de emergencia.',
-    call911: 'Llamar al 911',
-    suicidePrevention: 'Prevención del Suicidio',
-    call: 'Llamar',
-    visit: 'Visitar',
-    positive: 'Positivo',
-    neutral: 'Neutral',
-    negative: 'Negativo',
-    noData: 'Sin Datos',
-    accountSettings: 'Configuración de Cuenta',
+    
+    // Settings
+    general: 'General',
     appearance: 'Apariencia',
-    accountType: 'Tipo de Cuenta',
-    dataManagement: 'Gestión de Datos',
-    exportData: 'Exportar Datos',
-    deleteAccount: 'Eliminar Cuenta',
+    accessibility: 'Accesibilidad',
+    privacy: 'Privacidad y Seguridad',
+    notifications: 'Notificaciones',
+    data: 'Datos y Respaldo',
+    support: 'Soporte',
+    donate: 'Apóyanos',
     
-    // Emotions
-    happy: 'Feliz',
-    sad: 'Triste',
-    angry: 'Enojado',
-    anxious: 'Ansioso',
-    calm: 'Tranquilo',
-    excited: 'Emocionado',
-    tired: 'Cansado',
-    stressed: 'Estresado',
+    // Language names
+    language: 'Idioma',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
     
-    // Wellness Tips
-    tip1: 'Respira profundamente cuando te sientas abrumado',
-    tip2: 'Practica la gratitud escribiendo 3 cosas que aprecies',
-    tip3: 'Conéctate con un amigo o familiar',
-    tip4: 'Ve a caminar en la naturaleza',
-    tip5: 'Intenta una meditación de 5 minutos',
+    // Theme
+    theme: 'Tema',
+    dark: 'Oscuro',
+    auto: 'Automático',
+    recommended: 'Recomendado',
     
-    // Quotes
-    quote1: 'Tus sentimientos son válidos, y está bien no estar bien.',
-    quote2: 'Cada día es un nuevo comienzo.',
-    quote3: 'Eres más fuerte de lo que piensas.',
-    quote4: 'Está bien pedir ayuda.',
-    quote5: 'No estás solo en este viaje.',
+    // Features
+    soundEffects: 'Efectos de Sonido',
+    audioFeedback: 'Habilitar retroalimentación de audio',
+    
+    // Crisis Help
+    crisisHelp: 'Ayuda en Crisis',
+    emergencyContacts: 'Contactos de Emergencia',
+    call988: 'Llamar 988',
+    text988: 'Enviar SMS 988',
+    call911: 'Llamar 911',
+    viewResources: 'Ver Todos los Recursos',
+    
+    // Wellness
+    wellness: 'Bienestar',
+    mentalHealth: 'Salud Mental',
+    selfCare: 'Autocuidado',
+    mindfulness: 'Atención Plena',
+    meditation: 'Meditación',
+    exercise: 'Ejercicio',
+    nutrition: 'Nutrición',
+    sleep: 'Sueño',
+    social: 'Social',
+    work: 'Trabajo',
+    family: 'Familia',
+    hobbies: 'Pasatiempos',
+    
+    // Progress
+    progress: 'Progreso',
+    streak: 'Racha',
+    level: 'Nivel',
+    experience: 'Experiencia',
+    achievements: 'Logros',
+    rewards: 'Recompensas',
+    
+    // Messages
+    welcome: 'Bienvenido',
+    welcomeBack: 'Bienvenido de Vuelta',
+    thankYou: 'Gracias',
+    congratulations: 'Felicitaciones',
+    goodJob: 'Buen Trabajo',
+    keepGoing: 'Sigue Adelante',
+    youCanDoIt: 'Puedes Hacerlo',
   },
+  
+  fr: {
+    // Navigation
+    home: 'Accueil',
+    journal: 'Journal',
+    coach: 'Coach',
+    challenges: 'Défis',
+    history: 'Historique',
+    resources: 'Ressources',
+    settings: 'Paramètres',
+    
+    // Language names
+    language: 'Langue',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'Thème',
+    dark: 'Sombre',
+    auto: 'Automatique',
+    recommended: 'Recommandé',
+    
+    // Crisis Help
+    crisisHelp: 'Aide en Crise',
+    emergencyContacts: 'Contacts d\'Urgence',
+    call988: 'Appeler 988',
+    text988: 'Envoyer SMS 988',
+    call911: 'Appeler 911',
+    viewResources: 'Voir Toutes les Ressources',
+  },
+  
+  de: {
+    // Navigation
+    home: 'Startseite',
+    journal: 'Tagebuch',
+    coach: 'Coach',
+    challenges: 'Herausforderungen',
+    history: 'Verlauf',
+    resources: 'Ressourcen',
+    settings: 'Einstellungen',
+    
+    // Language names
+    language: 'Sprache',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'Design',
+    dark: 'Dunkel',
+    auto: 'Automatisch',
+    recommended: 'Empfohlen',
+    
+    // Crisis Help
+    crisisHelp: 'Krisenhilfe',
+    emergencyContacts: 'Notfallkontakte',
+    call988: '988 anrufen',
+    text988: '988 SMS senden',
+    call911: '911 anrufen',
+    viewResources: 'Alle Ressourcen anzeigen',
+  },
+  
+  ja: {
+    // Navigation
+    home: 'ホーム',
+    journal: 'ジャーナル',
+    coach: 'コーチ',
+    challenges: 'チャレンジ',
+    history: '履歴',
+    resources: 'リソース',
+    settings: '設定',
+    
+    // Language names
+    language: '言語',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'テーマ',
+    dark: 'ダーク',
+    auto: '自動',
+    recommended: '推奨',
+    
+    // Crisis Help
+    crisisHelp: '危機的支援',
+    emergencyContacts: '緊急連絡先',
+    call988: '988に電話',
+    text988: '988にSMS',
+    call911: '911に電話',
+    viewResources: 'すべてのリソースを表示',
+  },
+  
+  zh: {
+    // Navigation
+    home: '首页',
+    journal: '日记',
+    coach: '教练',
+    challenges: '挑战',
+    history: '历史',
+    resources: '资源',
+    settings: '设置',
+    
+    // Language names
+    language: '语言',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: '主题',
+    dark: '深色',
+    auto: '自动',
+    recommended: '推荐',
+    
+    // Crisis Help
+    crisisHelp: '危机帮助',
+    emergencyContacts: '紧急联系人',
+    call988: '拨打988',
+    text988: '发送988短信',
+    call911: '拨打911',
+    viewResources: '查看所有资源',
+  },
+  
+  ar: {
+    // Navigation
+    home: 'الرئيسية',
+    journal: 'المذكرة',
+    coach: 'المدرب',
+    challenges: 'التحديات',
+    history: 'التاريخ',
+    resources: 'الموارد',
+    settings: 'الإعدادات',
+    
+    // Language names
+    language: 'اللغة',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'المظهر',
+    dark: 'داكن',
+    auto: 'تلقائي',
+    recommended: 'موصى به',
+    
+    // Crisis Help
+    crisisHelp: 'مساعدة الأزمات',
+    emergencyContacts: 'جهات الاتصال الطارئة',
+    call988: 'اتصل بـ 988',
+    text988: 'أرسل رسالة 988',
+    call911: 'اتصل بـ 911',
+    viewResources: 'عرض جميع الموارد',
+  },
+  
+  hi: {
+    // Navigation
+    home: 'होम',
+    journal: 'जर्नल',
+    coach: 'कोच',
+    challenges: 'चुनौतियां',
+    history: 'इतिहास',
+    resources: 'संसाधन',
+    settings: 'सेटिंग्स',
+    
+    // Language names
+    language: 'भाषा',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'थीम',
+    dark: 'डार्क',
+    auto: 'ऑटो',
+    recommended: 'अनुशंसित',
+    
+    // Crisis Help
+    crisisHelp: 'संकट सहायता',
+    emergencyContacts: 'आपातकालीन संपर्क',
+    call988: '988 पर कॉल करें',
+    text988: '988 को टेक्स्ट करें',
+    call911: '911 पर कॉल करें',
+    viewResources: 'सभी संसाधन देखें',
+  },
+  
+  pt: {
+    // Navigation
+    home: 'Início',
+    journal: 'Diário',
+    coach: 'Coach',
+    challenges: 'Desafios',
+    history: 'Histórico',
+    resources: 'Recursos',
+    settings: 'Configurações',
+    
+    // Language names
+    language: 'Idioma',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'Tema',
+    dark: 'Escuro',
+    auto: 'Automático',
+    recommended: 'Recomendado',
+    
+    // Crisis Help
+    crisisHelp: 'Ajuda em Crise',
+    emergencyContacts: 'Contatos de Emergência',
+    call988: 'Ligar 988',
+    text988: 'Enviar SMS 988',
+    call911: 'Ligar 911',
+    viewResources: 'Ver Todos os Recursos',
+  },
+  
+  ru: {
+    // Navigation
+    home: 'Главная',
+    journal: 'Дневник',
+    coach: 'Тренер',
+    challenges: 'Вызовы',
+    history: 'История',
+    resources: 'Ресурсы',
+    settings: 'Настройки',
+    
+    // Language names
+    language: 'Язык',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'Тема',
+    dark: 'Тёмная',
+    auto: 'Авто',
+    recommended: 'Рекомендуется',
+    
+    // Crisis Help
+    crisisHelp: 'Кризисная Помощь',
+    emergencyContacts: 'Экстренные Контакты',
+    call988: 'Позвонить 988',
+    text988: 'Отправить SMS 988',
+    call911: 'Позвонить 911',
+    viewResources: 'Посмотреть Все Ресурсы',
+  },
+  
+  ko: {
+    // Navigation
+    home: '홈',
+    journal: '일기',
+    coach: '코치',
+    challenges: '도전',
+    history: '기록',
+    resources: '리소스',
+    settings: '설정',
+    
+    // Language names
+    language: '언어',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: '테마',
+    dark: '다크',
+    auto: '자동',
+    recommended: '권장',
+    
+    // Crisis Help
+    crisisHelp: '위기 도움',
+    emergencyContacts: '긴급 연락처',
+    call988: '988 전화',
+    text988: '988 문자',
+    call911: '911 전화',
+    viewResources: '모든 리소스 보기',
+  },
+  
+  it: {
+    // Navigation
+    home: 'Home',
+    journal: 'Diario',
+    coach: 'Coach',
+    challenges: 'Sfide',
+    history: 'Cronologia',
+    resources: 'Risorse',
+    settings: 'Impostazioni',
+    
+    // Language names
+    language: 'Lingua',
+    english: 'English',
+    spanish: 'Español',
+    french: 'Français',
+    german: 'Deutsch',
+    japanese: '日本語',
+    chinese: '中文',
+    arabic: 'العربية',
+    hindi: 'हिन्दी',
+    portuguese: 'Português',
+    russian: 'Русский',
+    korean: '한국어',
+    italian: 'Italiano',
+    
+    // Theme
+    theme: 'Tema',
+    dark: 'Scuro',
+    auto: 'Automatico',
+    recommended: 'Consigliato',
+    
+    // Crisis Help
+    crisisHelp: 'Aiuto in Crisi',
+    emergencyContacts: 'Contatti di Emergenza',
+    call988: 'Chiama 988',
+    text988: 'Invia SMS 988',
+    call911: 'Chiama 911',
+    viewResources: 'Visualizza Tutte le Risorse',
+  }
 };
 
 export const t = (key: string, language: Language = 'en'): string => {
-  return translations[language][key as keyof typeof translations[typeof language]] || key;
+  const lang = translations[language] || translations.en;
+  return (lang as any)[key] || key;
+};
+
+export const getLanguageName = (code: Language): string => {
+  const languageNames: Record<Language, string> = {
+    en: 'English',
+    es: 'Español',
+    fr: 'Français'
+  };
+  return languageNames[code] || code;
+};
+
+export const getLanguageFlag = (code: Language): string => {
+  const flags: Record<Language, string> = {
+    en: '🇺🇸',
+    es: '🇪🇸',
+    fr: '🇫🇷'
+  };
+  return flags[code] || '🌐';
 }; 

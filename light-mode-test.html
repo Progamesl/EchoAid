@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Mode Test</title>
+    <style>
+        /* Light mode fixes */
+        .light {
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-primary: #e5e7eb;
+            --border-secondary: #d1d5db;
+        }
+
+        /* Dark mode */
+        .dark {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-tertiary: #374151;
+            --border-primary: #374151;
+            --border-secondary: #4b5563;
+        }
+
+        /* Base styles */
+        body {
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            color: var(--text-primary);
+        }
+
+        .button {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: var(--border-primary);
+        }
+
+        .input {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 4px;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Force text visibility in light mode */
+        .light * {
+            color: var(--text-primary) !important;
+        }
+
+        .light .text-white {
+            color: var(--text-primary) !important;
+        }
+
+        .light .text-gray-100,
+        .light .text-gray-200,
+        .light .text-gray-300 {
+            color: var(--text-primary) !important;
+        }
+
+        /* Background fixes for light mode */
+        .light .bg-gray-900,
+        .light .bg-gray-800,
+        .light .bg-gray-700 {
+            background-color: var(--bg-secondary) !important;
+        }
+
+        .light .bg-white {
+            background-color: var(--bg-primary) !important;
+        }
+
+        /* Border fixes for light mode */
+        .light .border-gray-700,
+        .light .border-gray-600 {
+            border-color: var(--border-primary) !important;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="light">
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    
+    <div class="container">
+        <h1>Light Mode Test</h1>
+        <p>This is a test to ensure text is visible in light mode.</p>
+        
+        <div class="card">
+            <h2>Card Title</h2>
+            <p>This is some text in a card. It should be clearly visible in light mode.</p>
+            <button class="button">Test Button</button>
+        </div>
+
+        <div class="card">
+            <h2>Form Test</h2>
+            <input type="text" class="input" placeholder="Enter some text here...">
+            <textarea class="input" placeholder="Enter a longer message..."></textarea>
+        </div>
+
+        <div class="card">
+            <h2>Color Test</h2>
+            <p class="text-white">This should be dark text in light mode</p>
+            <p class="text-gray-100">This should also be dark text</p>
+            <p class="text-gray-200">And this too</p>
+            <p class="text-gray-300">And this as well</p>
+        </div>
+
+        <div class="card bg-gray-900">
+            <h2>Background Test</h2>
+            <p>This card has a dark background class but should show light background in light mode.</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('light')) {
+                body.classList.remove('light');
+                body.classList.add('dark');
+            } else {
+                body.classList.remove('dark');
+                body.classList.add('light');
+            }
+        }
+    </script>
+</body>
+</html> 

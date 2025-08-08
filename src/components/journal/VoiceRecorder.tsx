@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { t } from '../../utils/translations';
 import { Button } from '../ui/Button';
-import { Mic, MicOff, Play, Pause, Square, Upload, Trash2 } from 'lucide-react';
+import { Mic, MicOff, Play, Pause, Square, Upload, Trash2, Volume2, VolumeX } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface VoiceRecorderProps {
   onAudioReady: (audioBlob: Blob, transcription: string) => void;
@@ -18,6 +19,9 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [transcription, setTranscription] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [interimTranscript, setInterimTranscript] = useState('');
+  const [error, setError] = useState<string | null>(null);
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -33,17 +37,38 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = language === 'es' ? 'es-ES' : 'en-US';
+      
+      recognitionRef.current.onstart = () => {
+        setIsListening(true);
+        setError(null);
+      };
+      
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setError(`Speech recognition error: ${event.error}`);
+        setIsListening(false);
+      };
+    } else {
+      setError('Speech recognition is not supported in this browser');
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     };
   }, [language]);
 
   const startRecording = async () => {
     try {
+      setError(null);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioChunksRef.current = [];
@@ -64,6 +89,8 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       setIsRecording(true);
       setIsPaused(false);
       setDuration(0);
+      setTranscription('');
+      setInterimTranscript('');
 
       // Start timer
       intervalRef.current = setInterval(() => {
@@ -74,23 +101,25 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       if (recognitionRef.current) {
         recognitionRef.current.start();
         recognitionRef.current.onresult = (event: any) => {
-          let interimTranscript = '';
           let finalTranscript = '';
+          let currentInterim = '';
 
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const transcript = event.results[i][0].transcript;
             if (event.results[i].isFinal) {
               finalTranscript += transcript;
             } else {
-              interimTranscript += transcript;
+              currentInterim += transcript;
             }
           }
 
-          setTranscription(finalTranscript + interimTranscript);
+          setTranscription(finalTranscript);
+          setInterimTranscript(currentInterim);
         };
       }
     } catch (error) {
       console.error('Error accessing microphone:', error);
+      setError('Unable to access microphone. Please check permissions.');
     }
   };
 
@@ -118,6 +147,9 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     }
   };
 
@@ -128,6 +160,9 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       intervalRef.current = setInterval(() => {
         setDuration(prev => prev + 1);
       }, 1000);
+      if (recognitionRef.current) {
+        recognitionRef.current.start();
+      }
     }
   };
 
@@ -152,6 +187,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
       const url = URL.createObjectURL(file);
       setAudioUrl(url);
       onAudioReady(file, '');
+      setError(null);
     }
   };
 
@@ -159,8 +195,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
     setAudioBlob(null);
     setAudioUrl(null);
     setTranscription('');
+    setInterimTranscript('');
     setDuration(0);
     setIsPlaying(false);
+    setError(null);
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -175,6 +213,20 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
 
   return (
     <div className="space-y-6">
+      {/* Error Display */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm"
+          >
+            {error}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Recording Controls */}
       <div className="flex flex-col items-center space-y-4">
         {!audioBlob ? (
@@ -183,7 +235,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
               <Button
                 onClick={startRecording}
                 disabled={isProcessing}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               >
                 <Mic className="h-5 w-5" />
                 <span>{t('startRecording', language)}</span>
@@ -213,7 +265,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
           <div className="flex items-center space-x-4">
             <Button
               onClick={isPlaying ? pauseAudio : playAudio}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
             >
               {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
               <span>{isPlaying ? t('pause', language) : t('play', language)}</span>
@@ -249,23 +301,47 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
 
         {/* Timer */}
         {isRecording && (
-          <div className="text-2xl font-mono text-primary-600">
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            className="text-2xl font-mono text-primary-600 bg-white/10 backdrop-blur-md rounded-lg px-4 py-2"
+          >
             {formatTime(duration)}
-          </div>
+          </motion.div>
         )}
 
-        {/* Status */}
-        {isRecording && (
-          <div className="flex items-center space-x-2 text-sm text-primary-600">
-            <div className="w-2 h-2 bg-primary-600 rounded-full animate-pulse"></div>
-            <span>{t('recordingInProgress', language)}</span>
-          </div>
-        )}
+        {/* Status Indicators */}
+        <div className="flex items-center space-x-4">
+          {isRecording && (
+            <div className="flex items-center space-x-2 text-sm text-primary-600">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="w-3 h-3 bg-red-500 rounded-full"
+              />
+              <span>{t('recordingInProgress', language)}</span>
+            </div>
+          )}
+          {isListening && (
+            <div className="flex items-center space-x-2 text-sm text-green-600">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="w-3 h-3 bg-green-500 rounded-full"
+              />
+              <span>Listening...</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Audio Player */}
       {audioUrl && (
-        <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full"
+        >
           <audio
             ref={audioRef}
             src={audioUrl}
@@ -275,22 +351,41 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onAudioReady, isPr
             className="w-full"
             controls
           />
-        </div>
+        </motion.div>
       )}
 
-      {/* Transcription */}
-      {transcription && (
-        <div className="space-y-2">
+      {/* Live Transcription */}
+      {(isRecording || transcription || interimTranscript) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-2"
+        >
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            {t('transcription', language)}
+            {isRecording ? 'Live Transcription' : 'Transcription'}
           </label>
-          <textarea
-            value={transcription}
-            onChange={(e) => setTranscription(e.target.value)}
-            className="input-field min-h-[100px] resize-none"
-            placeholder={t('transcriptionPlaceholder', language)}
-          />
-        </div>
+          <div className="relative">
+            <textarea
+              value={transcription + (isRecording ? interimTranscript : '')}
+              onChange={(e) => setTranscription(e.target.value)}
+              className="input-field min-h-[120px] resize-none w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4 text-white placeholder-white/60"
+              placeholder={isRecording ? "Speaking..." : "Transcription will appear here..."}
+              readOnly={isRecording}
+            />
+            {isRecording && (
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full"
+              />
+            )}
+          </div>
+          {isRecording && (
+            <p className="text-xs text-gray-500">
+              Live transcription in progress...
+            </p>
+          )}
+        </motion.div>
       )}
     </div>
   );
