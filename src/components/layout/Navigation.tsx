@@ -86,38 +86,41 @@ export const Navigation: React.FC = () => {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <nav className="hidden md:block bg-white/10 backdrop-blur-md border-b border-white/20">
+      {/* Desktop Navigation - Clean tab style */}
+      <nav className="hidden md:block border-b border-white/15 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-8">
-              <Link to="/" className="text-white text-xl font-bold" aria-label="EchoAid Home">
+              <Link to="/" className="text-white text-xl font-bold tracking-tight" aria-label="EchoAid Home">
                 EchoAid
               </Link>
               
-              <div className="flex space-x-6" role="navigation" aria-label="Main navigation">
-                {navigationItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      location.pathname === item.href
-                        ? 'bg-white/20 text-white'
-                        : 'text-white/70 hover:text-white hover:bg-white/10'
-                    }`}
-                    aria-current={location.pathname === item.href ? 'page' : undefined}
-                  >
-                    <item.icon className="h-4 w-4" aria-hidden="true" />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
+              <div className="flex space-x-1" role="navigation" aria-label="Main navigation">
+                {navigationItems.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-colors border-b-2 ${
+                        isActive
+                          ? 'border-purple-500 text-white'
+                          : 'border-transparent text-white/70 hover:text-white hover:border-white/40'
+                      }`}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      <item.icon className="h-4 w-4" aria-hidden="true" />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <button
                 onClick={handleCrisisHelp}
-                className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors mobile-touch-target"
+                className="flex items-center space-x-2 px-3 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors mobile-touch-target"
                 aria-label="Get immediate crisis help"
               >
                 <AlertTriangle className="h-4 w-4" aria-hidden="true" />
@@ -131,7 +134,7 @@ export const Navigation: React.FC = () => {
       {/* Mobile Navigation */}
       <nav className="md:hidden">
         {/* Top Bar */}
-        <div className="bg-white/10 backdrop-blur-md border-b border-white/20 px-4 py-3">
+        <div className="bg-transparent border-b border-white/15 px-4 py-3">
           <div className="flex items-center justify-between">
             <Link to="/" className="text-white text-lg font-bold" aria-label="EchoAid Home">
               EchoAid
@@ -140,7 +143,7 @@ export const Navigation: React.FC = () => {
             <div className="flex items-center space-x-3">
               <button
                 onClick={handleCrisisHelp}
-                className="flex items-center space-x-2 px-3 py-2 bg-red-600 text-white rounded-lg transition-colors mobile-touch-target"
+                className="flex items-center space-x-2 px-3 py-2 bg-red-600 text-white rounded-md transition-colors mobile-touch-target"
                 aria-label="Get immediate crisis help"
               >
                 <AlertTriangle className="h-4 w-4" aria-hidden="true" />
@@ -293,6 +296,22 @@ export const Navigation: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Bottom Tab Bar */}
+      <div className="mobile-nav md:hidden">
+        <div className="mobile-nav-content">
+          {navigationItems.map((item) => {
+            const isActive = location.pathname === item.href;
+            const ItemIcon = item.icon;
+            return (
+              <Link key={item.name} to={item.href} className={`mobile-nav-item ${isActive ? 'active' : ''}`} aria-current={isActive ? 'page' : undefined}>
+                <ItemIcon className="mobile-nav-icon" />
+                <span className="mobile-nav-label">{item.name}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
     </>
   );
 }; 
