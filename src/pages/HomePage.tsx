@@ -143,7 +143,17 @@ export const HomePage: React.FC = () => {
                     Get Started
                   </Button>
                 </Link>
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target">
+                <Button
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target"
+                  aria-controls="features"
+                  onClick={() => {
+                    const el = document.getElementById('features');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
                   Learn More
                 </Button>
               </>
@@ -168,6 +178,7 @@ export const HomePage: React.FC = () => {
 
         {/* Features Grid */}
         <motion.div 
+          id="features"
           className="mobile-grid max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}

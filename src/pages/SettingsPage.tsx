@@ -543,35 +543,36 @@ export const SettingsPage: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation */}
-          <div className="lg:col-span-1">
-            <Card variant="glass" className="p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Categories</h3>
-              <div className="space-y-2">
-                {sections.map((section) => {
-                  const Icon = section.icon;
-                  return (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                        activeSection === section.id
-                          ? 'bg-purple-500/20 text-white border border-purple-500/30'
-                          : 'text-white/70 hover:text-white hover:bg-white/10'
-                      }`}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span>{section.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </Card>
+        {/* Top Tabs Navigation */}
+        <div className="mb-8 sticky top-16 z-30">
+          <div className="glass rounded-xl p-2 overflow-x-auto no-scrollbar">
+            <div className="flex space-x-2 min-w-max" role="tablist" aria-label="Settings sections">
+              {sections.map((section) => {
+                const Icon = section.icon;
+                const isActive = activeSection === section.id;
+                return (
+                  <button
+                    key={section.id}
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-purple-500/20 text-white border border-purple-500/30'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{section.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
+        </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
+        {/* Main Content */}
+        <div>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSection}
@@ -1304,8 +1305,6 @@ export const SettingsPage: React.FC = () => {
             </AnimatePresence>
           </div>
         </div>
-      </div>
-
       {/* Donation Modal */}
       <AnimatePresence>
         {showDonationModal && selectedDonationTier && (
@@ -1327,7 +1326,7 @@ export const SettingsPage: React.FC = () => {
                 <Heart className="h-12 w-12 text-pink-400 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-white mb-2">Thank You!</h3>
                 <p className="text-white/80">
-                  Your ${selectedDonationTier.amount} {selectedDonationTier.name} donation will help us continue providing free mental health support to everyone.
+                  Your ${selectedDonationTier?.amount} {selectedDonationTier?.name} donation will help us continue providing free mental health support to everyone.
                 </p>
               </div>
 
@@ -1475,4 +1474,4 @@ export const SettingsPage: React.FC = () => {
       </AnimatePresence>
     </div>
   );
-}; 
+};
