@@ -23,7 +23,7 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLocalAuth } from '../contexts/LocalAuthContext';
-import { t, getLanguageName, getLanguageFlag } from '../utils/translations';
+import { t } from '../utils/translations';
 import { Language } from '../types';
 
 interface UserPreferences {
@@ -587,7 +587,7 @@ export const SettingsPage: React.FC = () => {
                     <div className="space-y-6">
                       <h2 className="text-2xl font-bold text-white mb-6">General Settings</h2>
                       
-                      {/* Language and Theme */}
+                      {/* Theme only */}
                       <div className="glass p-6 rounded-xl">
                         <h2 className="text-xl font-semibold mb-4 flex items-center">
                           <Settings className="h-5 w-5 mr-2" />
@@ -595,26 +595,6 @@ export const SettingsPage: React.FC = () => {
                         </h2>
                         
                         <div className="space-y-4">
-                          {/* Language Selection */}
-                          <div>
-                            <label className="block text-sm font-medium mb-2">{t('language', language)}</label>
-                            <select
-                              value={preferences.language}
-                              onChange={(e) => handleLanguageChange(e.target.value as Language)}
-                              className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white"
-                              style={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                color: 'white',
-                                position: 'relative',
-                                zIndex: 10
-                              }}
-                            >
-                              <option value="en">{getLanguageFlag('en')} English</option>
-                              <option value="es">{getLanguageFlag('es')} Español</option>
-                              <option value="fr">{getLanguageFlag('fr')} Français</option>
-                            </select>
-                          </div>
-
                           {/* Theme Selection */}
                           <div>
                             <label className="block text-sm font-medium mb-2">Theme</label>
