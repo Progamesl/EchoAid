@@ -135,23 +135,23 @@ export const HomePage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl">
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-3xl">
               <Link to="/coach" className="w-full sm:w-auto">
-                <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto rounded-full min-w-[220px]">
                   <MessageCircle className="h-5 w-5 mr-2" />
-                  Open Coach
+                  <span className="whitespace-nowrap">Open Coach</span>
                 </Button>
               </Link>
               <Link to="/journal" className="w-full sm:w-auto">
-                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto rounded-full min-w-[220px]">
                   <BookOpen className="h-5 w-5 mr-2" />
-                  Voice Journal
+                  <span className="whitespace-nowrap">Voice Journal</span>
                 </Button>
               </Link>
               <Link to="/challenges" className="w-full sm:w-auto">
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto rounded-full min-w-[220px]">
                   <Target className="h-5 w-5 mr-2" />
-                  Wellness Challenges
+                  <span className="whitespace-nowrap">Wellness Challenges</span>
                 </Button>
               </Link>
             </div>
@@ -205,7 +205,7 @@ export const HomePage: React.FC = () => {
           transition={{ duration: 1, delay: 2.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 md:mb-12 text-center">Why Choose EchoAid?</h2>
-          <div className="mobile-grid max-w-4xl mx-auto flex justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 justify-items-center max-w-4xl mx-auto px-4">
             {[
               { number: "24/7", label: "Always Available", icon: Globe },
               { number: "Personalized", label: "Support Tailored to You", icon: Brain },
