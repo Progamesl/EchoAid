@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useLocalAuth } from '../../contexts/LocalAuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { t } from '../../utils/translations';
 import { Button } from '../ui/Button';
@@ -27,7 +26,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Language } from '../../types';
 
 export const Navigation: React.FC = () => {
-  const { user } = useLocalAuth();
   const { language, theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCrisisModal, setShowCrisisModal] = useState(false);
@@ -80,9 +78,7 @@ export const Navigation: React.FC = () => {
     window.open(`sms:${number}`, '_self');
   };
 
-  if (!user) {
-    return null;
-  }
+  // Always render navigation for both guests and authenticated users
 
   return (
     <>

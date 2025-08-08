@@ -135,44 +135,26 @@ export const HomePage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
           >
-            {!isAuthenticated ? (
-              <>
-                <Link to="/auth">
-                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target">
-                    <Play className="h-5 w-5 mr-2" />
-                    Get Started
-                  </Button>
-                </Link>
-                <Button
-                  variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target"
-                  aria-controls="features"
-                  onClick={() => {
-                    const el = document.getElementById('features');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }}
-                >
-                  Learn More
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl">
+              <Link to="/coach" className="w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                  <MessageCircle className="h-5 w-5 mr-2" />
+                  Open Coach
                 </Button>
-              </>
-            ) : (
-              <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md sm:max-w-none">
-                <Link to="/journal" className="w-full sm:w-auto">
-                  <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
-                    <BookOpen className="h-5 w-5 mr-2" />
-                    Start Journaling
-                  </Button>
-                </Link>
-                <Link to="/coach" className="w-full sm:w-auto">
-                  <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
-                    <MessageCircle className="h-5 w-5 mr-2" />
-                    Talk to Coach
-                  </Button>
-                </Link>
-              </div>
-            )}
+              </Link>
+              <Link to="/journal" className="w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                  <BookOpen className="h-5 w-5 mr-2" />
+                  Voice Journal
+                </Button>
+              </Link>
+              <Link to="/challenges" className="w-full sm:w-auto">
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 md:px-8 md:py-4 text-base md:text-lg mobile-button mobile-touch-target w-full sm:w-auto">
+                  <Target className="h-5 w-5 mr-2" />
+                  Wellness Challenges
+                </Button>
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
 
